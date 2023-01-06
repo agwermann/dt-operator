@@ -1,0 +1,24 @@
+apiVersion: dtdl.digitaltwin/v0
+kind: TwinClass
+metadata:
+  labels:
+    app.kubernetes.io/name: twinclass
+    app.kubernetes.io/instance: twinclass-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: twinclass-sample
+spec:
+  name: Factory
+  attributes:
+    - name: name
+      type: string
+    - name: type
+      type: enumeration
+      #reference: FactoryType
+    - name: location
+      type: string
+  relationships:
+    - name: machines
+      multiplicity: many
+      ref: Machine

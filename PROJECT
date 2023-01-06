@@ -1,0 +1,34 @@
+domain: digitaltwin
+layout:
+- go.kubebuilder.io/v3
+projectName: dt-operator
+repo: github.com/agwermann/dt-operator
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: dtdl
+  kind: TwinClass
+  path: github.com/agwermann/dt-operator/api/v0
+  version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: dtdl
+  kind: TwinEnum
+  path: github.com/agwermann/dt-operator/api/v0
+  version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: dtdl
+  kind: TwinService
+  path: github.com/agwermann/dt-operator/api/v0
+  version: v0
+version: "3"

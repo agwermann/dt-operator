@@ -1,0 +1,27 @@
+# permissions for end users to view twinenums.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: twinenum-viewer-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: dt-operator
+    app.kubernetes.io/part-of: dt-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: twinenum-viewer-role
+rules:
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinenums
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinenums/status
+  verbs:
+  - get

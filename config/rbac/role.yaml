@@ -1,0 +1,85 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: manager-role
+rules:
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinclasses
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinclasses/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinclasses/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinenums
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinenums/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinenums/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinservices
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinservices/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - dtdl.digitaltwin
+  resources:
+  - twinservices/status
+  verbs:
+  - get
+  - patch
+  - update
