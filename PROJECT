@@ -1,6 +1,7 @@
 domain: digitaltwin
 layout:
 - go.kubebuilder.io/v3
+multigroup: true
 projectName: dt-operator
 repo: github.com/agwermann/dt-operator
 resources:

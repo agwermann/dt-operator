@@ -25,8 +25,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	dtdlv0 "github.com/agwermann/dt-operator/api/v0"
-	v0 "github.com/agwermann/dt-operator/api/v0"
+	dtdlv0 "github.com/agwermann/dt-operator/apis/v0"
+	v0 "github.com/agwermann/dt-operator/apis/v0"
 )
 
 // TwinServiceReconciler reconciles a TwinService object

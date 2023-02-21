@@ -31,8 +31,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	dtdlv0 "github.com/agwermann/dt-operator/api/v0"
-	"github.com/agwermann/dt-operator/controllers"
+	dtdlv0 "github.com/agwermann/dt-operator/apis/v0"
+	"github.com/agwermann/dt-operator/controllers/v0"
 	//+kubebuilder:scaffold:imports
 )
 

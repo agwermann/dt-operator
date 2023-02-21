@@ -30,7 +30,7 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	dtdlv0 "github.com/agwermann/dt-operator/api/v0"
+	dtdlv0 "github.com/agwermann/dt-operator/apis/v0"
 	//+kubebuilder:scaffold:imports
 )
 
