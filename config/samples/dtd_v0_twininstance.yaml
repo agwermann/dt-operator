@@ -1,0 +1,13 @@
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  labels:
+    app.kubernetes.io/name: twininstance
+    app.kubernetes.io/instance: twininstance-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: twininstance-sample
+spec:
+  name: factory-twin-01
+  class: Factory

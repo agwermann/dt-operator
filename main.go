@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
+	dtdcontrollers "github.com/agwermann/dt-operator/controllers/dtd"
 	controllers "github.com/agwermann/dt-operator/controllers/dtd/v0"
 	//+kubebuilder:scaffold:imports
 )
@@ -107,6 +108,13 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "TwinService")
+		os.Exit(1)
+	}
+	if err = (&dtdcontrollers.TwinInstanceReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "TwinInstance")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

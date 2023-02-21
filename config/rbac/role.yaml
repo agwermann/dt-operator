@@ -60,6 +60,32 @@ rules:
 - apiGroups:
   - dtd.digitaltwin
   resources:
+  - twininstances
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
+  - twininstances/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
+  - twininstances/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
   - twinservices
   verbs:
   - create
