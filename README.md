@@ -1,9 +1,7 @@
 # dt-operator
 
 ```
-make manifests
-make install
-kubectl apply -f config/samples/
+make manifests && make install && kubectl apply -f config/samples/
 ```
 
 ```
@@ -15,7 +13,6 @@ kubectl get twinclasses
 kubectl get twinenums
 kubectl get twinservices
 ```
-
 
 ## Description
 // TODO(user): An in-depth paragraph about your project and overview of use

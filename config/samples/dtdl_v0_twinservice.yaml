@@ -1,4 +1,4 @@
-apiVersion: dtdl.digitaltwin/v0
+apiVersion: dtd.digitaltwin/v0
 kind: TwinService
 metadata:
   labels:

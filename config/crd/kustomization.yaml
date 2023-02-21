@@ -2,9 +2,9 @@
 # since it depends on service name and namespace that are out of this kustomize package.
 # It should be run by config/default
 resources:
-- bases/dtdl.digitaltwin_twinclasses.yaml
-- bases/dtdl.digitaltwin_twinenums.yaml
-- bases/dtdl.digitaltwin_twinservices.yaml
+- bases/dtd.digitaltwin_twinclasses.yaml
+- bases/dtd.digitaltwin_twinenums.yaml
+- bases/dtd.digitaltwin_twinservices.yaml
 #+kubebuilder:scaffold:crdkustomizeresource
 
 patchesStrategicMerge:

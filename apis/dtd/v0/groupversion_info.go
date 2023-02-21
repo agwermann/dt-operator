@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-// Package v0 contains API Schema definitions for the dtdl v0 API group
+// Package v0 contains API Schema definitions for the dtd v0 API group
 // +kubebuilder:object:generate=true
-// +groupName=dtdl.digitaltwin
+// +groupName=dtd.digitaltwin
 package v0
 
 import (
@@ -26,7 +26,7 @@ import (
 
 var (
 	// GroupVersion is group version used to register these objects
-	GroupVersion = schema.GroupVersion{Group: "dtdl.digitaltwin", Version: "v0"}
+	GroupVersion = schema.GroupVersion{Group: "dtd.digitaltwin", Version: "v0"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &scheme.Builder{GroupVersion: GroupVersion}

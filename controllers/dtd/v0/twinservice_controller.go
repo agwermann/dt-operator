@@ -34,9 +34,9 @@ type TwinServiceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=dtdl.digitaltwin,resources=twinservices,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=dtdl.digitaltwin,resources=twinservices/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=dtdl.digitaltwin,resources=twinservices/finalizers,verbs=update
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twinservices,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twinservices/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twinservices/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.

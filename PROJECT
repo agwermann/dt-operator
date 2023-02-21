@@ -10,7 +10,7 @@ resources:
     namespaced: true
   controller: true
   domain: digitaltwin
-  group: dtdl
+  group: dtd
   kind: TwinClass
   path: github.com/agwermann/dt-operator/api/v0
   version: v0
@@ -19,7 +19,7 @@ resources:
     namespaced: true
   controller: true
   domain: digitaltwin
-  group: dtdl
+  group: dtd
   kind: TwinEnum
   path: github.com/agwermann/dt-operator/api/v0
   version: v0
@@ -28,7 +28,7 @@ resources:
     namespaced: true
   controller: true
   domain: digitaltwin
-  group: dtdl
+  group: dtd
   kind: TwinService
   path: github.com/agwermann/dt-operator/api/v0
   version: v0

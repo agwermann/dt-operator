@@ -12,7 +12,7 @@ metadata:
   name: twinclass-editor-role
 rules:
 - apiGroups:
-  - dtdl.digitaltwin
+  - dtd.digitaltwin
   resources:
   - twinclasses
   verbs:
@@ -24,7 +24,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - dtdl.digitaltwin
+  - dtd.digitaltwin
   resources:
   - twinclasses/status
   verbs:
