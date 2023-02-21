@@ -17,28 +17,20 @@ limitations under the License.
 package v0
 
 import (
-	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 // EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
 // NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
 
-// TwinServiceSpec defines the desired state of TwinService
-type TwinServiceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of TwinService. Edit twinservice_types.go to remove/update
-	Name       string                 `json:"name,omitempty"`
-	Classes    []string               `json:"classes,omitempty"`
-	DataSource string                 `json:"dataSource,omitempty"`
-	DataTarget string                 `json:"dataTarget,omitempty"`
-	Template   corev1.PodTemplateSpec `json:"template,omitempty"`
+// TwinComponentSpec defines the desired state of TwinComponent
+type TwinComponentSpec struct {
+	Class   TwinClassSpec   `json:"class,omitempty"`
+	Service TwinServiceSpec `json:"service,omitempty"`
 }
 
-// TwinServiceStatus defines the observed state of TwinService
-type TwinServiceStatus struct {
+// TwinComponentStatus defines the observed state of TwinComponent
+type TwinComponentStatus struct {
 	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
 	// Important: Run "make" to regenerate code after modifying this file
 }
@@ -46,24 +38,24 @@ type TwinServiceStatus struct {
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// TwinService is the Schema for the twinservices API
-type TwinService struct {
+// TwinComponent is the Schema for the twincomponents API
+type TwinComponent struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   TwinServiceSpec   `json:"spec,omitempty"`
-	Status TwinServiceStatus `json:"status,omitempty"`
+	Spec   TwinComponentSpec   `json:"spec,omitempty"`
+	Status TwinComponentStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// TwinServiceList contains a list of TwinService
-type TwinServiceList struct {
+// TwinComponentList contains a list of TwinComponent
+type TwinComponentList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TwinService `json:"items"`
+	Items           []TwinComponent `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&TwinService{}, &TwinServiceList{})
+	SchemeBuilder.Register(&TwinComponent{}, &TwinComponentList{})
 }

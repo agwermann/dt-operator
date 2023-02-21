@@ -41,4 +41,13 @@ resources:
   kind: TwinInstance
   path: github.com/agwermann/dt-operator/apis/dtd/v0
   version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: dtd
+  kind: TwinComponent
+  path: github.com/agwermann/dt-operator/apis/dtd/v0
+  version: v0
 version: "3"

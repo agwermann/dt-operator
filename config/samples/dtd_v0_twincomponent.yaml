@@ -1,0 +1,15 @@
+apiVersion: dtd.digitaltwin/v0
+kind: TwinComponent
+metadata:
+  labels:
+    app.kubernetes.io/name: twincomponent
+    app.kubernetes.io/instance: twincomponent-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: twincomponent-sample
+spec:
+  class:
+    name: TwinClassName
+  service:
+    name: TwinServiceName
