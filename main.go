@@ -31,8 +31,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
-	dtdlv0 "github.com/agwermann/dt-operator/apis/v0"
-	"github.com/agwermann/dt-operator/controllers/v0"
+	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
+	controllers "github.com/agwermann/dt-operator/controllers/dtd/v0"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -44,7 +44,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
-	utilruntime.Must(dtdlv0.AddToScheme(scheme))
+	utilruntime.Must(dtdv0.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 

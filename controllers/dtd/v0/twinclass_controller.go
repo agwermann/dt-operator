@@ -24,7 +24,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	dtdlv0 "github.com/agwermann/dt-operator/apis/v0"
+	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
 )
 
 // TwinClassReconciler reconciles a TwinClass object
@@ -57,6 +57,6 @@ func (r *TwinClassReconciler) Reconcile(ctx context.Context, req ctrl.Request) (
 // SetupWithManager sets up the controller with the Manager.
 func (r *TwinClassReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&dtdlv0.TwinClass{}).
+		For(&dtdv0.TwinClass{}).
 		Complete(r)
 }
