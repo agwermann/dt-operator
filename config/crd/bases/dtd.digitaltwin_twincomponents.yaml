@@ -35,48 +35,44 @@ spec:
           spec:
             description: TwinComponentSpec defines the desired state of TwinComponent
             properties:
-              class:
-                description: TwinClassSpec defines the desired state of TwinClass
-                properties:
-                  attributes:
-                    items:
-                      properties:
-                        name:
-                          type: string
-                        type:
-                          type: string
-                      type: object
-                    type: array
-                  name:
-                    type: string
-                  relationships:
-                    items:
-                      properties:
-                        multiplicity:
-                          type: string
-                        name:
-                          type: string
-                        ref:
-                          type: string
-                      type: object
-                    type: array
-                required:
-                - name
-                type: object
+              classes:
+                items:
+                  description: TwinClassSpec defines the desired state of TwinClass
+                  properties:
+                    attributes:
+                      items:
+                        properties:
+                          name:
+                            type: string
+                          type:
+                            type: string
+                        type: object
+                      type: array
+                    name:
+                      type: string
+                    relationships:
+                      items:
+                        properties:
+                          multiplicity:
+                            type: string
+                          name:
+                            type: string
+                          ref:
+                            type: string
+                        type: object
+                      type: array
+                  required:
+                  - name
+                  type: object
+                type: array
               service:
                 description: TwinServiceSpec defines the desired state of TwinService
                 properties:
-                  classes:
-                    items:
-                      type: string
-                    type: array
                   dataSource:
                     type: string
                   dataTarget:
                     type: string
                   name:
-                    description: Foo is an example field of TwinService. Edit twinservice_types.go
-                      to remove/update
                     type: string
                   template:
                     description: PodTemplateSpec describes the data a pod should have

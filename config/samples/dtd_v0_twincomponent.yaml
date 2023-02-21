@@ -9,7 +9,17 @@ metadata:
     app.kubernetes.io/created-by: dt-operator
   name: twincomponent-sample
 spec:
-  class:
-    name: TwinClassName
+  classes:
+    - name: Factory
+    - name: Machine
   service:
     name: TwinServiceName
+    dataSource: mqtt
+    dataTarget: mqtt
+    template:
+      spec:
+        containers:
+            - name: edge-service
+              image: dev.local/edge-service:0.1
+              imagePullPolicy: Never
+              args: ["http://mqtt-response-handler", "80"]

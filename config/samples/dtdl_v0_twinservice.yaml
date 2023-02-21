@@ -10,9 +10,6 @@ metadata:
   name: twinservice-sample
 spec:
   name: TwinServiceName
-  classes:
-      - Factory
-      - Machine
   dataSource: mqtt
   dataTarget: mqtt
   template:

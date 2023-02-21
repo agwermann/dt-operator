@@ -25,7 +25,7 @@ import (
 
 // TwinComponentSpec defines the desired state of TwinComponent
 type TwinComponentSpec struct {
-	Class   TwinClassSpec   `json:"class,omitempty"`
+	Classes []TwinClassSpec `json:"classes,omitempty"`
 	Service TwinServiceSpec `json:"service,omitempty"`
 }
 

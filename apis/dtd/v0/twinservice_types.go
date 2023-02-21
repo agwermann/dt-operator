@@ -26,12 +26,7 @@ import (
 
 // TwinServiceSpec defines the desired state of TwinService
 type TwinServiceSpec struct {
-	// INSERT ADDITIONAL SPEC FIELDS - desired state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
-
-	// Foo is an example field of TwinService. Edit twinservice_types.go to remove/update
 	Name       string                 `json:"name,omitempty"`
-	Classes    []string               `json:"classes,omitempty"`
 	DataSource string                 `json:"dataSource,omitempty"`
 	DataTarget string                 `json:"dataTarget,omitempty"`
 	Template   corev1.PodTemplateSpec `json:"template,omitempty"`

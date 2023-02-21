@@ -35,17 +35,11 @@ spec:
           spec:
             description: TwinServiceSpec defines the desired state of TwinService
             properties:
-              classes:
-                items:
-                  type: string
-                type: array
               dataSource:
                 type: string
               dataTarget:
                 type: string
               name:
-                description: Foo is an example field of TwinService. Edit twinservice_types.go
-                  to remove/update
                 type: string
               template:
                 description: PodTemplateSpec describes the data a pod should have
