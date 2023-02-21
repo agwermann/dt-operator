@@ -1,0 +1,31 @@
+# permissions for end users to edit messaginggateways.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    app.kubernetes.io/name: clusterrole
+    app.kubernetes.io/instance: messaginggateway-editor-role
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/created-by: dt-operator
+    app.kubernetes.io/part-of: dt-operator
+    app.kubernetes.io/managed-by: kustomize
+  name: messaginggateway-editor-role
+rules:
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messaginggateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messaginggateways/status
+  verbs:
+  - get

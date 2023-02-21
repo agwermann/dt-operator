@@ -113,9 +113,17 @@ Create Digital Twin Operator Project:
 kubebuilder init --domain digitaltwin --repo github.com/agwermann/dt-operator
 ```
 
-Create Digital Twin Definition Language API:
+Create Digital Twin Definition API resources:
 
 ```bash
 kubebuilder create api --group dtd --version v0 --kind TwinComponent
 kubebuilder create api --group dtd --version v0 --kind TwinInstance
+```
+
+Create Digital Twin Core API Resources:
+
+```bash
+kubebuilder create api --group core --version v0 --kind MessagingGateway
+kubebuilder create api --group core --version v0 --kind MessageBroker
+kubebuilder create api --group core --version v0 --kind EventStore
 ```

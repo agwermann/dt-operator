@@ -50,4 +50,31 @@ resources:
   kind: TwinComponent
   path: github.com/agwermann/dt-operator/apis/dtd/v0
   version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: core
+  kind: MessagingGateway
+  path: github.com/agwermann/dt-operator/apis/core/v0
+  version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: core
+  kind: MessageBroker
+  path: github.com/agwermann/dt-operator/apis/core/v0
+  version: v0
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: digitaltwin
+  group: core
+  kind: EventStore
+  path: github.com/agwermann/dt-operator/apis/core/v0
+  version: v0
 version: "3"

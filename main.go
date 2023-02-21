@@ -31,7 +31,9 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
+	corev0 "github.com/agwermann/dt-operator/apis/core/v0"
 	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
+	corecontrollers "github.com/agwermann/dt-operator/controllers/core"
 	dtdcontrollers "github.com/agwermann/dt-operator/controllers/dtd"
 	controllers "github.com/agwermann/dt-operator/controllers/dtd/v0"
 	//+kubebuilder:scaffold:imports
@@ -46,6 +48,7 @@ func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 
 	utilruntime.Must(dtdv0.AddToScheme(scheme))
+	utilruntime.Must(corev0.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 
@@ -122,6 +125,27 @@ func main() {
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "TwinComponent")
+		os.Exit(1)
+	}
+	if err = (&corecontrollers.MessagingGatewayReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "MessagingGateway")
+		os.Exit(1)
+	}
+	if err = (&corecontrollers.MessageBrokerReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "MessageBroker")
+		os.Exit(1)
+	}
+	if err = (&corecontrollers.EventStoreReconciler{
+		Client: mgr.GetClient(),
+		Scheme: mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "EventStore")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

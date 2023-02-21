@@ -6,6 +6,84 @@ metadata:
   name: manager-role
 rules:
 - apiGroups:
+  - core.digitaltwin
+  resources:
+  - eventstores
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - eventstores/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - eventstores/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messagebrokers
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messagebrokers/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messagebrokers/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messaginggateways
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messaginggateways/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - core.digitaltwin
+  resources:
+  - messaginggateways/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
   - dtd.digitaltwin
   resources:
   - twinclasses
