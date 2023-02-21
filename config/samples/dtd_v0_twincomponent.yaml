@@ -9,6 +9,7 @@ metadata:
     app.kubernetes.io/created-by: dt-operator
   name: twincomponent-sample
 spec:
+  name: FactoryComponent
   classes:
     - name: Factory
     - name: Machine

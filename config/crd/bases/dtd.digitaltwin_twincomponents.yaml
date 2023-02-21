@@ -65,6 +65,8 @@ spec:
                   - name
                   type: object
                 type: array
+              name:
+                type: string
               service:
                 description: TwinServiceSpec defines the desired state of TwinService
                 properties:

@@ -21,8 +21,14 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
+type TwinServicePhase string
+
+const (
+	TwinServicePhasePending string = "Pending"
+	TwinServicePhaseUnknown string = "Unknown"
+	TwinServicePhaseRunning string = "Running"
+	TwinServicePhaseFailed  string = "Failed"
+)
 
 // TwinServiceSpec defines the desired state of TwinService
 type TwinServiceSpec struct {
@@ -34,8 +40,7 @@ type TwinServiceSpec struct {
 
 // TwinServiceStatus defines the observed state of TwinService
 type TwinServiceStatus struct {
-	// INSERT ADDITIONAL STATUS FIELD - define observed state of cluster
-	// Important: Run "make" to regenerate code after modifying this file
+	Status TwinServicePhase `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true

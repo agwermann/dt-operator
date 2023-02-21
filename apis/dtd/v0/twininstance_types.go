@@ -25,8 +25,8 @@ import (
 
 // TwinInstanceSpec defines the desired state of TwinInstance
 type TwinInstanceSpec struct {
-	Name  string `json:"name,omitempty"`
-	Class string `json:"class,omitempty"`
+	Name      string            `json:"name,omitempty"`
+	Component TwinComponentSpec `json:"component,omitempty"`
 }
 
 // TwinInstanceStatus defines the observed state of TwinInstance

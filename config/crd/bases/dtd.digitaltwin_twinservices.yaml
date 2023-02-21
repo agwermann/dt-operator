@@ -7224,6 +7224,9 @@ spec:
             type: object
           status:
             description: TwinServiceStatus defines the observed state of TwinService
+            properties:
+              status:
+                type: string
             type: object
         type: object
     served: true

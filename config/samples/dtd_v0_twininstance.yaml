@@ -10,4 +10,5 @@ metadata:
   name: twininstance-sample
 spec:
   name: factory-twin-01
-  class: Factory
+  component:
+    name: FactoryComponent
