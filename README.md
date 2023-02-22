@@ -127,3 +127,39 @@ kubebuilder create api --group core --version v0 --kind MessagingGateway
 kubebuilder create api --group core --version v0 --kind MessageBroker
 kubebuilder create api --group core --version v0 --kind EventStore
 ```
+
+## Pre-Requisites
+
+1. Configure your Kubernetes cluster. You can run the platform in [Kind](https://kind.sigs.k8s.io/) in your local computer.
+
+```sh
+kind create cluster
+```
+
+2. Deploy ScillaDB for the Event Store.
+
+```sh
+
+```
+
+3. Install Knative and Istio dependencies.
+
+```sh
+
+```
+
+4. Install Camel-k
+
+```sh
+
+```
+
+## Install Digital Twin Platform
+
+Now that you have configured the above pre-requisites, you can install the platform.
+
+```sh
+
+```
+
+
