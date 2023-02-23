@@ -3,7 +3,6 @@ package broker
 import (
 	"github.com/go-logr/logr"
 	v1 "k8s.io/api/core/v1"
-	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/apimachinery/pkg/util/intstr"
 
 	appsv1 "k8s.io/api/apps/v1"
@@ -11,25 +10,10 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-const MQTT_BROKER_CONFIG_MAP_NAME = "mqtt-broker-config"
-const MQTT_BROKER_DEPLOYMENT_NAME = "mqtt-broker-deployment"
-const MQTT_BROKER_SERVICE_NAME = "mqtt-broker-service"
+const MQTT_BROKER_CONFIG_MAP_SUFFIX = "-config"
+const MQTT_BROKER_DEPLOYMENT_SUFFIX = "-deployment"
+const MQTT_BROKER_SERVICE_SUFFIX = "-service"
 const MQTT_BROKER_NAMESPACE = "mqtt"
-
-var BROKER_CONFIG_MAP_KEY = types.NamespacedName{
-	Name:      MQTT_BROKER_CONFIG_MAP_NAME,
-	Namespace: MQTT_BROKER_NAMESPACE,
-}
-
-var BROKER_DEPLOYMENT_KEY = types.NamespacedName{
-	Name:      MQTT_BROKER_DEPLOYMENT_NAME,
-	Namespace: MQTT_BROKER_NAMESPACE,
-}
-
-var BROKER_SERVICE_KEY = types.NamespacedName{
-	Name:      MQTT_BROKER_SERVICE_NAME,
-	Namespace: MQTT_BROKER_NAMESPACE,
-}
 
 func buildLabels(appLabel string) map[string]string {
 	return map[string]string{
@@ -38,9 +22,9 @@ func buildLabels(appLabel string) map[string]string {
 }
 
 type MessageBroker interface {
-	GetBrokerDeployment() *appsv1.Deployment
-	GetBrokerConfigMap() *v1.ConfigMap
-	GetBrokerService() *v1.Service
+	GetBrokerDeployment(name string) *appsv1.Deployment
+	GetBrokerConfigMap(name string) *v1.ConfigMap
+	GetBrokerService(name string) *v1.Service
 }
 
 func NewMqttMessageBroker(logger logr.Logger) MessageBroker {
@@ -143,19 +127,22 @@ func (b *mqttMessageBroker) DoesBrokerExists() error {
 	return nil
 }
 
-func (b *mqttMessageBroker) GetBrokerDeployment() *appsv1.Deployment {
+func (b *mqttMessageBroker) GetBrokerDeployment(name string) *appsv1.Deployment {
+
+	deploymentName := name + MQTT_BROKER_DEPLOYMENT_SUFFIX
+
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      MQTT_BROKER_DEPLOYMENT_NAME,
+			Name:      deploymentName,
 			Namespace: MQTT_BROKER_NAMESPACE,
 		},
 		Spec: appsv1.DeploymentSpec{
 			Selector: &metav1.LabelSelector{
-				MatchLabels: buildLabels(MQTT_BROKER_DEPLOYMENT_NAME),
+				MatchLabels: buildLabels(deploymentName),
 			},
 			Template: corev1.PodTemplateSpec{
 				ObjectMeta: metav1.ObjectMeta{
-					Labels: buildLabels(MQTT_BROKER_DEPLOYMENT_NAME),
+					Labels: buildLabels(deploymentName),
 				},
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{{
@@ -190,10 +177,13 @@ func (b *mqttMessageBroker) GetBrokerDeployment() *appsv1.Deployment {
 	return deployment
 }
 
-func (b *mqttMessageBroker) GetBrokerConfigMap() *v1.ConfigMap {
+func (b *mqttMessageBroker) GetBrokerConfigMap(name string) *v1.ConfigMap {
+
+	configName := name + MQTT_BROKER_CONFIG_MAP_SUFFIX
+
 	configmap := &v1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      MQTT_BROKER_CONFIG_MAP_NAME,
+			Name:      configName,
 			Namespace: MQTT_BROKER_NAMESPACE,
 		},
 		Data: map[string]string{
@@ -219,14 +209,15 @@ func (b *mqttMessageBroker) GetBrokerConfigMap() *v1.ConfigMap {
 	return configmap
 }
 
-func (b *mqttMessageBroker) GetBrokerService() *v1.Service {
+func (b *mqttMessageBroker) GetBrokerService(name string) *v1.Service {
+	serviceName := name + MQTT_BROKER_SERVICE_SUFFIX
 	service := &v1.Service{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      MQTT_BROKER_SERVICE_NAME,
+			Name:      serviceName,
 			Namespace: MQTT_BROKER_NAMESPACE,
 		},
 		Spec: v1.ServiceSpec{
-			Selector: buildLabels(MQTT_BROKER_SERVICE_NAME),
+			Selector: buildLabels(serviceName),
 			Ports: []v1.ServicePort{
 				{
 					Port: 1883,

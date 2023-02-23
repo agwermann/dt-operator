@@ -65,9 +65,9 @@ func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 	if err != nil {
 		if errors.IsNotFound(err) {
-			r.Delete(context.TODO(), broker.GetBrokerDeployment(), &client.DeleteOptions{})
-			r.Delete(context.TODO(), broker.GetBrokerConfigMap(), &client.DeleteOptions{})
-			r.Delete(context.TODO(), broker.GetBrokerService(), &client.DeleteOptions{})
+			r.Delete(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.DeleteOptions{})
+			r.Delete(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.DeleteOptions{})
+			r.Delete(context.TODO(), broker.GetBrokerService(req.Name), &client.DeleteOptions{})
 		}
 		return ctrl.Result{}, nil
 	}
@@ -78,9 +78,11 @@ func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 		return ctrl.Result{}, err
 	}
 
-	err = r.Create(context.TODO(), broker.GetBrokerDeployment(), &client.CreateOptions{})
-	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(), &client.CreateOptions{})
-	err = r.Create(context.TODO(), broker.GetBrokerService(), &client.CreateOptions{})
+	// Check if there is already a mqtt broker (it can only have one)
+
+	err = r.Create(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerService(req.Name), &client.CreateOptions{})
 
 	return ctrl.Result{}, nil
 }
