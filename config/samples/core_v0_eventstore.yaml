@@ -1,12 +1,4 @@
 apiVersion: core.digitaltwin/v0
 kind: EventStore
 metadata:
-  labels:
-    app.kubernetes.io/name: eventstore
-    app.kubernetes.io/instance: eventstore-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
-  name: eventstore-sample
-spec:
-  # TODO(user): Add fields here
+  name: event-store

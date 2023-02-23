@@ -113,7 +113,7 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "TwinService")
 		os.Exit(1)
 	}
-	if err = (&dtdcontrollers.TwinInstanceReconciler{
+	if err = (&controllers.TwinInstanceReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {

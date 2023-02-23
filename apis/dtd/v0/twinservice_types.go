@@ -34,7 +34,6 @@ const (
 type TwinServiceSpec struct {
 	Name       string                 `json:"name,omitempty"`
 	DataSource string                 `json:"dataSource,omitempty"`
-	DataTarget string                 `json:"dataTarget,omitempty"`
 	Template   corev1.PodTemplateSpec `json:"template,omitempty"`
 }
 

@@ -65,14 +65,14 @@ spec:
                   - name
                   type: object
                 type: array
+              dataSource:
+                type: string
               name:
                 type: string
               service:
                 description: TwinServiceSpec defines the desired state of TwinService
                 properties:
                   dataSource:
-                    type: string
-                  dataTarget:
                     type: string
                   name:
                     type: string

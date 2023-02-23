@@ -37,8 +37,6 @@ spec:
             properties:
               dataSource:
                 type: string
-              dataTarget:
-                type: string
               name:
                 type: string
               template:

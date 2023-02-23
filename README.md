@@ -144,14 +144,27 @@ kind create cluster
 
 3. Install Knative and Istio dependencies.
 
-```sh
+- Knative Serving:
 
+```sh
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-crds.yaml
+kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-core.yaml
+kubectl get pods --namespace knative-serving
+```
+
+- Knative Eventing:
+
+```sh
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.8.0/eventing-crds.yaml
+kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.8.0/eventing-core.yaml
+kubectl get pods --namespace knative-eventing
 ```
 
 4. Install Camel-k
 
 ```sh
-
+kubectl -n default create secret docker-registry external-registry-secret --docker-username <DOCKER_USERNAME> --docker-password <DOCKER_PASSWORD> -n dtserverless
+kamel install --operator-image=docker.io/apache/camel-k:1.10.3 --olm=false -n dtserverless --global --registry docker.io --organization agwermann --registry-secret external-registry-secret --force
 ```
 
 ## Install Digital Twin Platform
@@ -162,4 +175,21 @@ Now that you have configured the above pre-requisites, you can install the platf
 
 ```
 
+## Message Format
 
+The platform uses Cloud Event specification for describing event data within the platform boundaries. The physical twins messages are expected to follow Cloud Event specification as well. In case the below format is not sent, the platform will assume the content sent is the data field in JSON format, and it will populate the rest of the mandatory fields.
+
+```json
+{
+    "id": "41c9afea-02a1-48a0-ad3c-cb9faae86551",
+    "type" : "com.digitaltwin.telemetry.temperature",
+    "subject": "SensorData",
+    "source": "Sensor-01012023",
+    "time" : "2018-04-05T17:31:00Z",
+    // "component": "Sensor", TBD
+    "datacontenttype": "application/json",
+    "data": {
+        "temperature": 20
+    }
+}
+```

@@ -33,15 +33,14 @@ spec:
           metadata:
             type: object
           spec:
-            description: MessageBrokerSpec defines the desired state of MessageBroker
             properties:
-              foo:
-                description: Foo is an example field of MessageBroker. Edit messagebroker_types.go
-                  to remove/update
+              type:
                 type: string
             type: object
           status:
-            description: MessageBrokerStatus defines the observed state of MessageBroker
+            properties:
+              status:
+                type: string
             type: object
         type: object
     served: true

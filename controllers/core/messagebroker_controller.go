@@ -18,13 +18,18 @@ package core
 
 import (
 	"context"
+	"fmt"
 
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
 	corev0 "github.com/agwermann/dt-operator/apis/core/v0"
+	v0 "github.com/agwermann/dt-operator/apis/core/v0"
+	"github.com/agwermann/dt-operator/controllers/core/broker"
 )
 
 // MessageBrokerReconciler reconciles a MessageBroker object
@@ -49,9 +54,58 @@ type MessageBrokerReconciler struct {
 func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	// TODO(user): your logic here
+	// TODO: Creation and deletion work fine.
+	// TODO: Need to understand if there is another way to do, if not we must create a MQTTMessageBroker resource instead of keep it generic
+	logger := log.FromContext(ctx).WithValues("MessageBroker", req.NamespacedName)
+
+	messageBroker := &corev0.MessageBroker{}
+	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, messageBroker)
+
+	broker := broker.NewMqttMessageBroker(logger) //, _ := r.ResolveBrokerType(ctx, req, messageBroker.Spec.Type)
+
+	if err != nil {
+		if errors.IsNotFound(err) {
+			r.Delete(context.TODO(), broker.GetBrokerDeployment(), &client.DeleteOptions{})
+			r.Delete(context.TODO(), broker.GetBrokerConfigMap(), &client.DeleteOptions{})
+			r.Delete(context.TODO(), broker.GetBrokerService(), &client.DeleteOptions{})
+		}
+		return ctrl.Result{}, nil
+	}
+
+	logger.Info(fmt.Sprintf("Creating Message Broker of type %s", messageBroker.Spec.Type))
+
+	if err != nil {
+		return ctrl.Result{}, err
+	}
+
+	err = r.Create(context.TODO(), broker.GetBrokerDeployment(), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerService(), &client.CreateOptions{})
 
 	return ctrl.Result{}, nil
+}
+
+// SetupWithManager sets up the controller with the Manager.
+func (r *MessageBrokerReconciler) ResolveBrokerType(ctx context.Context, req ctrl.Request, brokerType v0.MessageBrokerType) (broker.MessageBroker, error) {
+	var messageBroker broker.MessageBroker
+
+	logger := log.FromContext(ctx).WithValues("MessageBroker", req.NamespacedName)
+
+	switch brokerType {
+	case v0.MESSAGE_BROKER_MQTT:
+		messageBroker = broker.NewMqttMessageBroker(logger)
+	case v0.MESSAGE_BROKER_AMQP:
+		errorMessage := fmt.Sprintf("Broker Type %s still not supported", v0.MESSAGE_BROKER_AMQP)
+		return messageBroker, errors.NewBadRequest(errorMessage)
+	case v0.MESSAGE_BROKER_KAFKA:
+		errorMessage := fmt.Sprintf("Broker Type %s still not supported", v0.MESSAGE_BROKER_KAFKA)
+		return messageBroker, errors.NewBadRequest(errorMessage)
+	default:
+		errorMessage := fmt.Sprintf("Message broker type %s is invalid: it must be one of the following: %s, %s, %s", brokerType, v0.MESSAGE_BROKER_AMQP, v0.MESSAGE_BROKER_KAFKA, v0.MESSAGE_BROKER_MQTT)
+		return messageBroker, errors.NewBadRequest(errorMessage)
+	}
+
+	return messageBroker, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.

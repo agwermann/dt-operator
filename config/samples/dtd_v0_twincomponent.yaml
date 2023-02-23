@@ -10,13 +10,9 @@ metadata:
   name: twincomponent-sample
 spec:
   name: FactoryComponent
-  classes:
-    - name: Factory
-    - name: Machine
+  dataSource: mqtt
   service:
     name: TwinServiceName
-    dataSource: mqtt
-    dataTarget: mqtt
     template:
       spec:
         containers:
