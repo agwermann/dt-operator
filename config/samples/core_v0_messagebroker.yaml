@@ -4,3 +4,10 @@ metadata:
   name: mqtt-message-broker
 spec:
   type: mqtt
+---
+apiVersion: core.digitaltwin/v0
+kind: MessageBroker
+metadata:
+  name: amqp-message-broker
+spec:
+  type: amqp

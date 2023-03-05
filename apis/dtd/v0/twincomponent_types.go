@@ -25,10 +25,19 @@ import (
 
 // TwinComponentSpec defines the desired state of TwinComponent
 type TwinComponentSpec struct {
-	Name       string          `json:"name,omitempty"`
-	Classes    []TwinClassSpec `json:"classes,omitempty"`
-	Service    TwinServiceSpec `json:"service,omitempty"`
-	DataSource string          `json:"dataSource,omitempty"`
+	Name   string              `json:"name,omitempty"`
+	Parent string              `json:"parent,omitempty"`
+	Schema TwinComponentSchema `json:"schema,omitempty"`
+}
+
+type TwinComponentSchema struct {
+	Identifier string                   `json:"identifier,omitempty"`
+	Attributes []TwinComponentAttribute `json:"attributes,omitempty"`
+}
+
+type TwinComponentAttribute struct {
+	Name string `json:"name,omitempty"`
+	Type string `json:"type,omitempty"`
 }
 
 // TwinComponentStatus defines the observed state of TwinComponent

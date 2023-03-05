@@ -7,16 +7,98 @@ metadata:
     app.kubernetes.io/part-of: dt-operator
     app.kuberentes.io/managed-by: kustomize
     app.kubernetes.io/created-by: dt-operator
-  name: twincomponent-sample
+  name: factory
 spec:
   name: FactoryComponent
-  dataSource: mqtt
-  service:
-    name: TwinServiceName
-    template:
-      spec:
-        containers:
-            - name: edge-service
-              image: dev.local/edge-service:0.1
-              imagePullPolicy: Never
-              args: ["http://mqtt-response-handler", "80"]
+  schema:
+    identifier: id
+    attributes:
+      - name: id
+        type: string
+      - name: name
+        type: string
+      - name: type
+        type: string
+      - name: location
+        type: string
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinComponent
+metadata:
+  labels:
+    app.kubernetes.io/name: twincomponent
+    app.kubernetes.io/instance: twincomponent-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: machine
+spec:
+  name: MachineComponent
+  parent: FactoryComponent
+  schema:
+    identifier: id
+    attributes:
+      - name: id
+        type: string
+      - name: name
+        type: string
+      - name: type
+        type: string
+      - name: latitude
+        type: double
+      - name: longitude
+        type: double
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinComponent
+metadata:
+  labels:
+    app.kubernetes.io/name: twincomponent
+    app.kubernetes.io/instance: twincomponent-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: temperature-sensor
+spec:
+  name: TemperatureSensorComponent
+  parent: MachineComponent
+  schema:
+    identifier: id
+    attributes:
+      - name: id
+        type: string
+      - name: name
+        type: string
+      - name: latitude
+        type: double
+      - name: longitude
+        type: double
+      - name: temperature
+        type: double
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinComponent
+metadata:
+  labels:
+    app.kubernetes.io/name: twincomponent
+    app.kubernetes.io/instance: twincomponent-sample
+    app.kubernetes.io/part-of: dt-operator
+    app.kuberentes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: dt-operator
+  name: pressure-sensor
+spec:
+  name: PressureSensorComponent
+  parent: MachineComponent
+  schema:
+    identifier: id
+    attributes:
+      - name: id
+        type: string
+      - name: name
+        type: string
+      - name: latitude
+        type: double
+      - name: longitude
+        type: double
+      - name: temperature
+        type: double

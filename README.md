@@ -9,9 +9,8 @@ kubectl api-resources
 ```
 
 ```
-kubectl get twinclasses
-kubectl get twinenums
-kubectl get twinservices
+kubectl get twincomponent
+kubectl get twininstance
 ```
 
 ## Description
@@ -193,3 +192,21 @@ The platform uses Cloud Event specification for describing event data within the
     }
 }
 ```
+
+- Adicionar a nível de Component
+
+- Factory1
+    - Machine1
+        - Sensor1
+        - Sensor2
+    - Machine2
+        - Sensor3
+        - Sensor4
+
+- Factory2
+    - Machine3
+        - Sensor1
+        - Sensor2
+    - Machine4
+        - Sensor3
+        - Sensor4
