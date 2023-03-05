@@ -61,25 +61,37 @@ func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	messageBroker := &corev0.MessageBroker{}
 	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, messageBroker)
 
-	broker := broker.NewMqttMessageBroker(logger) //, _ := r.ResolveBrokerType(ctx, req, messageBroker.Spec.Type)
+	broker := broker.NewMqttMessageBroker(logger)
 
+	// Delete scenario
 	if err != nil {
 		if errors.IsNotFound(err) {
-			r.Delete(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.DeleteOptions{})
-			r.Delete(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.DeleteOptions{})
-			r.Delete(context.TODO(), broker.GetBrokerService(req.Name), &client.DeleteOptions{})
+			err = r.Delete(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.DeleteOptions{})
+
+			if err != nil {
+				logger.Error(err, fmt.Sprintf("Error while deleting broker %s deployment", req.Name))
+			}
+
+			err = r.Delete(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.DeleteOptions{})
+
+			if err != nil {
+				logger.Error(err, fmt.Sprintf("Error while deleting broker %s config map", req.Name))
+			}
+
+			err = r.Delete(context.TODO(), broker.GetBrokerService(req.Name), &client.DeleteOptions{})
+
+			if err != nil {
+				logger.Error(err, fmt.Sprintf("Error while deleting broker %s service", req.Name))
+			}
 		}
 		return ctrl.Result{}, nil
 	}
 
+	// Create / Update scenarios
 	logger.Info(fmt.Sprintf("Creating Message Broker of type %s", messageBroker.Spec.Type))
 
-	if err != nil {
-		return ctrl.Result{}, err
-	}
-
 	// Check if there is already a mqtt broker (it can only have one)
-
+	err = r.Create(context.TODO(), broker.GetNamespace(), &client.CreateOptions{})
 	err = r.Create(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.CreateOptions{})
 	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.CreateOptions{})
 	err = r.Create(context.TODO(), broker.GetBrokerService(req.Name), &client.CreateOptions{})

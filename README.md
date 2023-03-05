@@ -11,6 +11,7 @@ kubectl api-resources
 ```
 kubectl get twincomponent
 kubectl get twininstance
+kubectl get messagebrokers
 ```
 
 ## Description

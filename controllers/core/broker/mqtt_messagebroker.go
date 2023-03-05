@@ -13,7 +13,7 @@ import (
 const MQTT_BROKER_CONFIG_MAP_SUFFIX = "-config"
 const MQTT_BROKER_DEPLOYMENT_SUFFIX = "-deployment"
 const MQTT_BROKER_SERVICE_SUFFIX = "-service"
-const MQTT_BROKER_NAMESPACE = "mqtt"
+const MQTT_BROKER_NAMESPACE = "dt-operator-core"
 
 func buildLabels(appLabel string) map[string]string {
 	return map[string]string{
@@ -22,6 +22,7 @@ func buildLabels(appLabel string) map[string]string {
 }
 
 type MessageBroker interface {
+	GetNamespace() *corev1.Namespace
 	GetBrokerDeployment(name string) *appsv1.Deployment
 	GetBrokerConfigMap(name string) *v1.ConfigMap
 	GetBrokerService(name string) *v1.Service
@@ -35,6 +36,15 @@ func NewMqttMessageBroker(logger logr.Logger) MessageBroker {
 
 type mqttMessageBroker struct {
 	logger logr.Logger
+}
+
+func (b *mqttMessageBroker) GetNamespace() *corev1.Namespace {
+	namespace := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: MQTT_BROKER_NAMESPACE,
+		},
+	}
+	return namespace
 }
 
 func (b *mqttMessageBroker) CreateBroker() error {
