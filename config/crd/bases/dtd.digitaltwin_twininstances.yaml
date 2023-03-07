@@ -64,6 +64,9 @@ spec:
             type: object
           status:
             description: TwinInstanceStatus defines the observed state of TwinInstance
+            properties:
+              status:
+                type: string
             type: object
         type: object
     served: true
