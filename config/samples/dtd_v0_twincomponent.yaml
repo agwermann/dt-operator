@@ -3,7 +3,7 @@ kind: TwinComponent
 metadata:
   name: factory
 spec:
-  name: FactoryComponent
+  name: Factory Component
   schema:
     identifier: id
     attributes:

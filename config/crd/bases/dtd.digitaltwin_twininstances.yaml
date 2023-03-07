@@ -59,6 +59,8 @@ spec:
                 type: object
               name:
                 type: string
+              parentInstance:
+                type: string
             type: object
           status:
             description: TwinInstanceStatus defines the observed state of TwinInstance

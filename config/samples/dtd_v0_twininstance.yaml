@@ -1,14 +1,78 @@
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
 metadata:
-  labels:
-    app.kubernetes.io/name: twininstance
-    app.kubernetes.io/instance: twininstance-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
-  name: twininstance-sample
+  name: factory-twin-01
 spec:
   name: factory-twin-01
   component:
-    name: FactoryComponent
+    name: factory
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: factory-twin-02
+spec:
+  name: factory-twin-02
+  component:
+    name: factory
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: machine-twin-01
+spec:
+  name: machine-twin-01
+  parentInstance: factory-twin-01
+  component:
+    name: machine
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: machine-twin-02
+spec:
+  name: machine-twin-02
+  parentInstance: factory-twin-02
+  component:
+    name: machine
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: temperature-sensor-01
+spec:
+  name: temperature-sensor-01
+  parentInstance: machine-twin-01
+  component:
+    name: temperature-sensor
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: pressure-sensor-01
+spec:
+  name: pressure-sensor-01
+  parentInstance: machine-twin-01
+  component:
+    name: pressure-sensor
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: temperature-sensor-02
+spec:
+  name: temperature-sensor-02
+  parentInstance: machine-twin-02
+  component:
+    name: temperature-sensor
+---
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: pressure-sensor-02
+spec:
+  name: pressure-sensor-02
+  parentInstance: machine-twin-02
+  component:
+    name: pressure-sensor
+---
