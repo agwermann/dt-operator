@@ -1,12 +1,6 @@
 apiVersion: dtd.digitaltwin/v0
 kind: TwinComponent
 metadata:
-  labels:
-    app.kubernetes.io/name: twincomponent
-    app.kubernetes.io/instance: twincomponent-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
   name: factory
 spec:
   name: FactoryComponent
@@ -25,12 +19,6 @@ spec:
 apiVersion: dtd.digitaltwin/v0
 kind: TwinComponent
 metadata:
-  labels:
-    app.kubernetes.io/name: twincomponent
-    app.kubernetes.io/instance: twincomponent-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
   name: machine
 spec:
   name: MachineComponent
@@ -52,12 +40,6 @@ spec:
 apiVersion: dtd.digitaltwin/v0
 kind: TwinComponent
 metadata:
-  labels:
-    app.kubernetes.io/name: twincomponent
-    app.kubernetes.io/instance: twincomponent-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
   name: temperature-sensor
 spec:
   name: TemperatureSensorComponent
@@ -79,12 +61,6 @@ spec:
 apiVersion: dtd.digitaltwin/v0
 kind: TwinComponent
 metadata:
-  labels:
-    app.kubernetes.io/name: twincomponent
-    app.kubernetes.io/instance: twincomponent-sample
-    app.kubernetes.io/part-of: dt-operator
-    app.kuberentes.io/managed-by: kustomize
-    app.kubernetes.io/created-by: dt-operator
   name: pressure-sensor
 spec:
   name: PressureSensorComponent
