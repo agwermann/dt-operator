@@ -47,9 +47,9 @@ type TwinComponentReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
 func (r *TwinComponentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	_ = log.FromContext(ctx)
+	logger := log.FromContext(ctx).WithValues("TwinService", req.NamespacedName)
 
-	// TODO(user): your logic here
+	logger.Info("Creating Twin Component " + req.Name)
 
 	return ctrl.Result{}, nil
 }
