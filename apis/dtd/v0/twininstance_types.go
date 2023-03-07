@@ -17,6 +17,7 @@ limitations under the License.
 package v0
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -31,9 +32,10 @@ const (
 
 // TwinInstanceSpec defines the desired state of TwinInstance
 type TwinInstanceSpec struct {
-	Name           string            `json:"name,omitempty"`
-	ParentInstance string            `json:"parentInstance,omitempty"`
-	Component      TwinComponentSpec `json:"component,omitempty"`
+	Name           string                 `json:"name,omitempty"`
+	ParentInstance string                 `json:"parentInstance,omitempty"`
+	Component      TwinComponentSpec      `json:"component,omitempty"`
+	Template       corev1.PodTemplateSpec `json:"template,omitempty"`
 }
 
 // TwinInstanceStatus defines the observed state of TwinInstance

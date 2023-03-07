@@ -45,6 +45,13 @@ spec:
   parentInstance: machine-twin-01
   component:
     name: temperature-sensor
+  template:
+    spec:
+      containers:
+          - name: edge-service
+            image: dev.local/edge-service:0.1
+            imagePullPolicy: Never
+            args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -55,6 +62,13 @@ spec:
   parentInstance: machine-twin-01
   component:
     name: pressure-sensor
+  template:
+    spec:
+      containers:
+          - name: edge-service
+            image: dev.local/edge-service:0.1
+            imagePullPolicy: Never
+            args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -65,6 +79,13 @@ spec:
   parentInstance: machine-twin-02
   component:
     name: temperature-sensor
+  template:
+    spec:
+      containers:
+          - name: edge-service
+            image: dev.local/edge-service:0.1
+            imagePullPolicy: Never
+            args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -75,4 +96,11 @@ spec:
   parentInstance: machine-twin-02
   component:
     name: pressure-sensor
+  template:
+    spec:
+      containers:
+          - name: edge-service
+            image: dev.local/edge-service:0.1
+            imagePullPolicy: Never
+            args: ["http://mqtt-response-handler", "80"]
 ---
