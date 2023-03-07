@@ -13,7 +13,6 @@ import (
 const MQTT_BROKER_CONFIG_MAP_SUFFIX = "-config"
 const MQTT_BROKER_DEPLOYMENT_SUFFIX = "-deployment"
 const MQTT_BROKER_SERVICE_SUFFIX = "-service"
-const MQTT_BROKER_NAMESPACE = "dt-operator-core"
 
 func buildLabels(appLabel string) map[string]string {
 	return map[string]string{
@@ -22,10 +21,10 @@ func buildLabels(appLabel string) map[string]string {
 }
 
 type MessageBroker interface {
-	GetNamespace() *corev1.Namespace
-	GetBrokerDeployment(name string) *appsv1.Deployment
-	GetBrokerConfigMap(name string) *v1.ConfigMap
-	GetBrokerService(name string) *v1.Service
+	GetNamespace(namespace string) *corev1.Namespace
+	GetBrokerDeployment(name string, namespace string) *appsv1.Deployment
+	GetBrokerConfigMap(name string, namespace string) *v1.ConfigMap
+	GetBrokerService(name string, namespace string) *v1.Service
 }
 
 func NewMqttMessageBroker(logger logr.Logger) MessageBroker {
@@ -38,13 +37,12 @@ type mqttMessageBroker struct {
 	logger logr.Logger
 }
 
-func (b *mqttMessageBroker) GetNamespace() *corev1.Namespace {
-	namespace := &corev1.Namespace{
+func (b *mqttMessageBroker) GetNamespace(namespace string) *corev1.Namespace {
+	return &corev1.Namespace{
 		ObjectMeta: metav1.ObjectMeta{
-			Name: MQTT_BROKER_NAMESPACE,
+			Name: namespace,
 		},
 	}
-	return namespace
 }
 
 func (b *mqttMessageBroker) CreateBroker() error {
@@ -137,14 +135,14 @@ func (b *mqttMessageBroker) DoesBrokerExists() error {
 	return nil
 }
 
-func (b *mqttMessageBroker) GetBrokerDeployment(name string) *appsv1.Deployment {
+func (b *mqttMessageBroker) GetBrokerDeployment(name string, namespace string) *appsv1.Deployment {
 
 	deploymentName := name + MQTT_BROKER_DEPLOYMENT_SUFFIX
 
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      deploymentName,
-			Namespace: MQTT_BROKER_NAMESPACE,
+			Namespace: namespace,
 		},
 		Spec: appsv1.DeploymentSpec{
 			Selector: &metav1.LabelSelector{
@@ -187,14 +185,14 @@ func (b *mqttMessageBroker) GetBrokerDeployment(name string) *appsv1.Deployment 
 	return deployment
 }
 
-func (b *mqttMessageBroker) GetBrokerConfigMap(name string) *v1.ConfigMap {
+func (b *mqttMessageBroker) GetBrokerConfigMap(name string, namespace string) *v1.ConfigMap {
 
 	configName := name + MQTT_BROKER_CONFIG_MAP_SUFFIX
 
 	configmap := &v1.ConfigMap{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      configName,
-			Namespace: MQTT_BROKER_NAMESPACE,
+			Namespace: namespace,
 		},
 		Data: map[string]string{
 			"mosquitto.conf": `|-
@@ -219,12 +217,12 @@ func (b *mqttMessageBroker) GetBrokerConfigMap(name string) *v1.ConfigMap {
 	return configmap
 }
 
-func (b *mqttMessageBroker) GetBrokerService(name string) *v1.Service {
+func (b *mqttMessageBroker) GetBrokerService(name string, namespace string) *v1.Service {
 	serviceName := name + MQTT_BROKER_SERVICE_SUFFIX
 	service := &v1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      serviceName,
-			Namespace: MQTT_BROKER_NAMESPACE,
+			Namespace: namespace,
 		},
 		Spec: v1.ServiceSpec{
 			Selector: buildLabels(serviceName),

@@ -66,19 +66,19 @@ func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	// Delete scenario
 	if err != nil {
 		if errors.IsNotFound(err) {
-			err = r.Delete(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.DeleteOptions{})
+			err = r.Delete(context.TODO(), broker.GetBrokerDeployment(req.Name, req.Namespace), &client.DeleteOptions{})
 
 			if err != nil {
 				logger.Error(err, fmt.Sprintf("Error while deleting broker %s deployment", req.Name))
 			}
 
-			err = r.Delete(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.DeleteOptions{})
+			err = r.Delete(context.TODO(), broker.GetBrokerConfigMap(req.Name, req.Namespace), &client.DeleteOptions{})
 
 			if err != nil {
 				logger.Error(err, fmt.Sprintf("Error while deleting broker %s config map", req.Name))
 			}
 
-			err = r.Delete(context.TODO(), broker.GetBrokerService(req.Name), &client.DeleteOptions{})
+			err = r.Delete(context.TODO(), broker.GetBrokerService(req.Name, req.Namespace), &client.DeleteOptions{})
 
 			if err != nil {
 				logger.Error(err, fmt.Sprintf("Error while deleting broker %s service", req.Name))
@@ -91,10 +91,9 @@ func (r *MessageBrokerReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	logger.Info(fmt.Sprintf("Creating Message Broker of type %s", messageBroker.Spec.Type))
 
 	// Check if there is already a mqtt broker (it can only have one)
-	err = r.Create(context.TODO(), broker.GetNamespace(), &client.CreateOptions{})
-	err = r.Create(context.TODO(), broker.GetBrokerDeployment(req.Name), &client.CreateOptions{})
-	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(req.Name), &client.CreateOptions{})
-	err = r.Create(context.TODO(), broker.GetBrokerService(req.Name), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerDeployment(req.Name, req.Namespace), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerConfigMap(req.Name, req.Namespace), &client.CreateOptions{})
+	err = r.Create(context.TODO(), broker.GetBrokerService(req.Name, req.Namespace), &client.CreateOptions{})
 
 	return ctrl.Result{}, nil
 }
