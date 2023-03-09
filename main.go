@@ -36,6 +36,7 @@ import (
 	corecontrollers "github.com/agwermann/dt-operator/controllers/core"
 	dtdcontrollers "github.com/agwermann/dt-operator/controllers/dtd"
 	controllers "github.com/agwermann/dt-operator/controllers/dtd/v0"
+	kserving "knative.dev/serving/pkg/apis/serving/v1"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -49,6 +50,7 @@ func init() {
 
 	utilruntime.Must(dtdv0.AddToScheme(scheme))
 	utilruntime.Must(corev0.AddToScheme(scheme))
+	utilruntime.Must(kserving.AddToScheme(scheme))
 	//+kubebuilder:scaffold:scheme
 }
 

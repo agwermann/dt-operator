@@ -18,10 +18,12 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 
-	appsv1 "k8s.io/api/apps/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
+	kserving "knative.dev/serving/pkg/apis/serving/v1"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -53,15 +55,40 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	logger.Info("New TwinInstance identified")
 
-	deployment := &appsv1.Deployment{}
-
-	err := r.Get(ctx, types.NamespacedName{
-		Name:      BROKER_DEPLOYMENT_NAME,
-		Namespace: BROKER_NAMESPACE,
-	}, deployment)
+	twinInstance := &dtdv0.TwinInstance{}
+	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, twinInstance)
 
 	if err != nil {
-		logger.Error(err, "MQTT Broker does not exist")
+		logger.Error(err, "Not possible to get Twin Instance"+twinInstance.Name)
+	}
+
+	kService := &kserving.Service{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Service",
+			APIVersion: "serving.knative.dev/v1",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      twinInstance.Name,
+			Namespace: twinInstance.Namespace,
+		},
+		Spec: kserving.ServiceSpec{
+			ConfigurationSpec: kserving.ConfigurationSpec{
+				Template: kserving.RevisionTemplateSpec{
+					ObjectMeta: metav1.ObjectMeta{
+						Name: twinInstance.Name + "-01",
+					},
+					Spec: kserving.RevisionSpec{
+						PodSpec: twinInstance.Spec.Template.Spec,
+					},
+				},
+			},
+		},
+	}
+
+	err = r.Create(ctx, kService, &client.CreateOptions{})
+
+	if err != nil {
+		logger.Error(err, fmt.Sprintf("Error while reconcile"))
 	}
 
 	return ctrl.Result{}, nil
