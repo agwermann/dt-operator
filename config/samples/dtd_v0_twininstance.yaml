@@ -48,10 +48,10 @@ spec:
   template:
     spec:
       containers:
-          - name: edge-service
-            image: dev.local/edge-service:0.1
-            imagePullPolicy: Never
-            args: ["http://mqtt-response-handler", "80"]
+        - name: edge-service
+          image: agwermann/manufactoring-service:0.1
+          imagePullPolicy: Always
+          args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -65,10 +65,10 @@ spec:
   template:
     spec:
       containers:
-          - name: edge-service
-            image: dev.local/edge-service:0.1
-            imagePullPolicy: Never
-            args: ["http://mqtt-response-handler", "80"]
+        - name: edge-service
+          image: agwermann/manufactoring-service:0.1
+          imagePullPolicy: Always
+          args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -82,10 +82,10 @@ spec:
   template:
     spec:
       containers:
-          - name: edge-service
-            image: dev.local/edge-service:0.1
-            imagePullPolicy: Never
-            args: ["http://mqtt-response-handler", "80"]
+        - name: edge-service
+          image: agwermann/manufactoring-service:0.1
+          imagePullPolicy: Always
+          args: ["http://mqtt-response-handler", "80"]
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -99,8 +99,8 @@ spec:
   template:
     spec:
       containers:
-          - name: edge-service
-            image: dev.local/edge-service:0.1
-            imagePullPolicy: Never
-            args: ["http://mqtt-response-handler", "80"]
+        - name: edge-service
+          image: agwermann/manufactoring-service:0.1
+          imagePullPolicy: Always
+          args: ["http://mqtt-response-handler", "80"]
 ---

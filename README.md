@@ -145,7 +145,13 @@ kubebuilder create api --group core --version v0 --kind EventStore
 kind create cluster
 ```
 
-2. Deploy ScillaDB for the Event Store.
+2. Load Docker image into cluster.
+
+```sh
+kind load docker-image dev.local/edge-service:0.1
+```
+
+3. Deploy ScillaDB for the Event Store.
 
 ```sh
 
@@ -169,11 +175,17 @@ kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v
 kubectl get pods --namespace knative-eventing
 ```
 
+5. Install CDR in Cluster
+
+```
+make install
+```
+
 4. Install Camel-k
 
 ```sh
-kubectl -n default create secret docker-registry external-registry-secret --docker-username <DOCKER_USERNAME> --docker-password <DOCKER_PASSWORD> -n dtserverless
-kamel install --operator-image=docker.io/apache/camel-k:1.10.3 --olm=false -n dtserverless --global --registry docker.io --organization agwermann --registry-secret external-registry-secret --force
+kubectl -n default create secret docker-registry external-registry-secret --docker-username <DOCKER_USERNAME> --docker-password <DOCKER_PASSWORD> -n dt-core
+kamel install --operator-image=docker.io/apache/camel-k:1.10.3 --olm=false -n dt-core --global --registry docker.io --organization agwermann --registry-secret external-registry-secret --force
 ```
 
 ## Install Digital Twin Platform

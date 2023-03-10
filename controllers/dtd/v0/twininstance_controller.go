@@ -19,7 +19,9 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"reflect"
 
+	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -27,6 +29,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
 	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
 )
@@ -59,7 +62,40 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, twinInstance)
 
 	if err != nil {
-		logger.Error(err, "Not possible to get Twin Instance"+twinInstance.Name)
+		logger.Error(err, "Error while getting Twin Instance "+twinInstance.Name)
+		return reconcile.Result{}, err
+	}
+
+	twinInstanceNotExist := reflect.DeepEqual(twinInstance, dtdv0.TwinInstance{})
+
+	kService := r.buildTwinKService(*twinInstance)
+
+	if kService == nil {
+		logger.Info(fmt.Sprintf("Twin Instance %s does not have a container spec to be deployed", twinInstance.Name))
+		return reconcile.Result{}, nil
+	}
+
+	if twinInstanceNotExist {
+		err = r.Delete(ctx, kService, &client.DeleteOptions{})
+		if err != nil {
+			logger.Error(err, "Error while deleting Twin Instance "+twinInstance.Name)
+			return reconcile.Result{}, err
+		}
+	} else {
+		err = r.Create(ctx, kService, &client.CreateOptions{})
+		if err != nil {
+			logger.Error(err, "Error while creating Twin Instance "+twinInstance.Name)
+			return reconcile.Result{}, err
+		}
+	}
+
+	return ctrl.Result{}, nil
+}
+
+func (r *TwinInstanceReconciler) buildTwinKService(twinInstance dtdv0.TwinInstance) *kserving.Service {
+
+	if reflect.DeepEqual(twinInstance.Spec.Template.Spec, v1.PodSpec{}) {
+		return nil
 	}
 
 	kService := &kserving.Service{
@@ -85,13 +121,7 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 		},
 	}
 
-	err = r.Create(ctx, kService, &client.CreateOptions{})
-
-	if err != nil {
-		logger.Error(err, fmt.Sprintf("Error while reconcile"))
-	}
-
-	return ctrl.Result{}, nil
+	return kService
 }
 
 // SetupWithManager sets up the controller with the Manager.
