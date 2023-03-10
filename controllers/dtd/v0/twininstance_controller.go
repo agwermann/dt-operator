@@ -22,6 +22,7 @@ import (
 	"reflect"
 
 	v1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/types"
@@ -59,29 +60,29 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	logger.Info("New TwinInstance identified")
 
 	twinInstance := &dtdv0.TwinInstance{}
-	err := r.Get(ctx, types.NamespacedName{Name: req.Name, Namespace: req.Namespace}, twinInstance)
+	twinInstanceNamespacedName := types.NamespacedName{Name: req.Name, Namespace: req.Namespace}
+	err := r.Get(ctx, twinInstanceNamespacedName, twinInstance)
 
 	if err != nil {
+		if errors.IsNotFound(err) {
+			kService := r.buildTwinKServiceForDeletion(twinInstanceNamespacedName)
+			err = r.Delete(ctx, kService, &client.DeleteOptions{})
+			if err != nil {
+				logger.Error(err, "Error while deleting Twin Instance "+twinInstance.Name)
+				return reconcile.Result{}, err
+			}
+			return reconcile.Result{}, nil
+		}
 		logger.Error(err, "Error while getting Twin Instance "+twinInstance.Name)
 		return reconcile.Result{}, err
-	}
-
-	twinInstanceNotExist := reflect.DeepEqual(twinInstance, dtdv0.TwinInstance{})
-
-	kService := r.buildTwinKService(*twinInstance)
-
-	if kService == nil {
-		logger.Info(fmt.Sprintf("Twin Instance %s does not have a container spec to be deployed", twinInstance.Name))
-		return reconcile.Result{}, nil
-	}
-
-	if twinInstanceNotExist {
-		err = r.Delete(ctx, kService, &client.DeleteOptions{})
-		if err != nil {
-			logger.Error(err, "Error while deleting Twin Instance "+twinInstance.Name)
-			return reconcile.Result{}, err
-		}
 	} else {
+		kService := r.buildTwinKServiceForCreation(*twinInstance)
+
+		if kService == nil {
+			logger.Info(fmt.Sprintf("Twin Instance %s does not have a container spec to be deployed", twinInstance.Name))
+			return reconcile.Result{}, nil
+		}
+
 		err = r.Create(ctx, kService, &client.CreateOptions{})
 		if err != nil {
 			logger.Error(err, "Error while creating Twin Instance "+twinInstance.Name)
@@ -92,7 +93,20 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 	return ctrl.Result{}, nil
 }
 
-func (r *TwinInstanceReconciler) buildTwinKService(twinInstance dtdv0.TwinInstance) *kserving.Service {
+func (r *TwinInstanceReconciler) buildTwinKServiceForDeletion(namespacedName types.NamespacedName) *kserving.Service {
+	return &kserving.Service{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Service",
+			APIVersion: "serving.knative.dev/v1",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      namespacedName.Name,
+			Namespace: namespacedName.Namespace,
+		},
+	}
+}
+
+func (r *TwinInstanceReconciler) buildTwinKServiceForCreation(twinInstance dtdv0.TwinInstance) *kserving.Service {
 
 	if reflect.DeepEqual(twinInstance.Spec.Template.Spec, v1.PodSpec{}) {
 		return nil
