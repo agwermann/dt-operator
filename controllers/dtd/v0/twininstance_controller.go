@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"reflect"
 
+	camelk "github.com/apache/camel-k/pkg/apis/camel/v1"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -71,6 +72,12 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 				logger.Error(err, "Error while deleting Twin Instance "+twinInstance.Name)
 				return reconcile.Result{}, err
 			}
+			camelKIntegrator := r.buildCamelKIntegrator(req.NamespacedName)
+			err = r.Delete(ctx, camelKIntegrator, &client.DeleteOptions{})
+			if err != nil {
+				logger.Error(err, "Error while deleting Twin Instance Integrator "+twinInstance.Name)
+				return reconcile.Result{}, err
+			}
 			return reconcile.Result{}, nil
 		}
 		logger.Error(err, "Error while getting Twin Instance "+twinInstance.Name)
@@ -88,9 +95,44 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 			logger.Error(err, "Error while creating Twin Instance "+twinInstance.Name)
 			return reconcile.Result{}, err
 		}
+
+		camelKIntegrator := r.buildCamelKIntegrator(req.NamespacedName)
+		err = r.Create(ctx, camelKIntegrator, &client.CreateOptions{})
+		if err != nil {
+			logger.Error(err, "Error while creating Twin Instance Integrator "+twinInstance.Name)
+			return reconcile.Result{}, err
+		}
+
 	}
 
 	return ctrl.Result{}, nil
+}
+
+func (r *TwinInstanceReconciler) buildCamelKIntegrator(namespacedName types.NamespacedName) *camelk.Integration {
+
+	integratorName := namespacedName.Name + "-mqtt-integrator"
+
+	sourceCode := fmt.Sprintf(`
+		from("paho:mytopic_0?brokerUrl=tcp://mosquitto:1883")
+		.to("knative:endpoint/%s")
+		.to("log:info");`,
+		namespacedName.Name)
+
+	return &camelk.Integration{
+		TypeMeta: metav1.TypeMeta{
+			Kind:       "Integration",
+			APIVersion: "camel.apache.org/v1",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      integratorName,
+			Namespace: namespacedName.Namespace,
+		},
+		Spec: camelk.IntegrationSpec{
+			Sources: []camelk.SourceSpec{
+				camelk.NewSourceSpec(integratorName, sourceCode, camelk.LanguageJavaShell),
+			},
+		},
+	}
 }
 
 func (r *TwinInstanceReconciler) buildTwinKServiceForDeletion(namespacedName types.NamespacedName) *kserving.Service {
