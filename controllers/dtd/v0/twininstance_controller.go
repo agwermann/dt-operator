@@ -20,6 +20,7 @@ import (
 	"context"
 	"fmt"
 	"reflect"
+	"strings"
 
 	camelk "github.com/apache/camel-k/pkg/apis/camel/v1"
 	v1 "k8s.io/api/core/v1"
@@ -66,7 +67,14 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 
 	if err != nil {
 		if errors.IsNotFound(err) {
+
 			kService := r.buildTwinKServiceForDeletion(twinInstanceNamespacedName)
+
+			if kService == nil {
+				logger.Info(fmt.Sprintf("Twin Instance %s does not have a container spec to be deleted", twinInstance.Name))
+				return reconcile.Result{}, nil
+			}
+
 			err = r.Delete(ctx, kService, &client.DeleteOptions{})
 			if err != nil {
 				logger.Error(err, "Error while deleting Twin Instance "+twinInstance.Name)
@@ -96,6 +104,8 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 			return reconcile.Result{}, err
 		}
 
+		logger.Info("Created Twin Instance Knative Service for " + twinInstance.Name)
+
 		camelKIntegrator := r.buildCamelKIntegrator(req.NamespacedName)
 		err = r.Create(ctx, camelKIntegrator, &client.CreateOptions{})
 		if err != nil {
@@ -103,36 +113,71 @@ func (r *TwinInstanceReconciler) Reconcile(ctx context.Context, req ctrl.Request
 			return reconcile.Result{}, err
 		}
 
+		logger.Info("Created Twin Instance Camel Integration for " + twinInstance.Name)
+
 	}
 
 	return ctrl.Result{}, nil
 }
 
+func formatNameToService(name string) {
+
+}
+
+func formatNameToIntegratorClass(name string) {
+
+}
+
 func (r *TwinInstanceReconciler) buildCamelKIntegrator(namespacedName types.NamespacedName) *camelk.Integration {
 
-	integratorName := namespacedName.Name + "-mqtt-integrator"
+	// TODO: Format name
+	integratorName := strings.ToLower(namespacedName.Name) + "-mqtt-integrator"
 
 	sourceCode := fmt.Sprintf(`
-		from("paho:mytopic_0?brokerUrl=tcp://mosquitto:1883")
-		.to("knative:endpoint/%s")
-		.to("log:info");`,
+		import org.apache.camel.builder.RouteBuilder;
+		public class IntegratorClass extends RouteBuilder {
+		@Override
+		public void configure() throws Exception {    
+			from("paho:mytopic_0?brokerUrl=tcp://mqtt-message-broker-service:1883")
+			.to("knative:endpoint/%s")
+			.to("log:info");
+		}
+		}`,
 		namespacedName.Name)
 
-	return &camelk.Integration{
-		TypeMeta: metav1.TypeMeta{
-			Kind:       "Integration",
-			APIVersion: "camel.apache.org/v1",
+	camelkIntegration := camelk.NewIntegration("default", integratorName)
+	camelkIntegration.Spec.AddSources(camelk.SourceSpec{
+		DataSpec: camelk.DataSpec{
+			Name:    "IntegratorClass.java",
+			Content: sourceCode,
 		},
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      integratorName,
-			Namespace: namespacedName.Namespace,
-		},
-		Spec: camelk.IntegrationSpec{
-			Sources: []camelk.SourceSpec{
-				camelk.NewSourceSpec(integratorName, sourceCode, camelk.LanguageJavaShell),
-			},
-		},
-	}
+		Language: camelk.LanguageJavaSource,
+	})
+
+	return &camelkIntegration
+
+	// return &camelk.Integration{
+	// 	TypeMeta: metav1.TypeMeta{
+	// 		Kind:       "Integration",
+	// 		APIVersion: "camel.apache.org/v1",
+	// 	},
+	// 	ObjectMeta: metav1.ObjectMeta{
+	// 		Name:      integratorName,
+	// 		Namespace: namespacedName.Namespace,
+	// 	},
+	// 	Spec: camelk.IntegrationSpec{
+	// 		Sources: []camelk.SourceSpec{
+	// 			camelk.NewSourceSpec(integratorName, sourceCode),
+	// 		},
+	// 		Traits: camelk.Traits{
+	// 			Knative: &trait.KnativeTrait{
+	// 				Trait: trait.Trait{
+	// 					Enabled: pointer.Bool(true),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 func (r *TwinInstanceReconciler) buildTwinKServiceForDeletion(namespacedName types.NamespacedName) *kserving.Service {

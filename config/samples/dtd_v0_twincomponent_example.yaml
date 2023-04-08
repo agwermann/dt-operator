@@ -1,0 +1,53 @@
+apiVersion: dtd.digitaltwin/v0
+kind: TwinComponent
+metadata:
+  name: factory
+spec:
+  name: FactoryComponent
+  schema:
+    id: dtmi:digitaltwins:ngsi_ld:cim:energy:Bay;1
+    type: Interface
+    displayName: Bay
+    description:
+    comment: 
+    property:
+      - name: bayEnergyMeasFlag
+        comment: Indicates the presence/absence of energy measurements.
+        schema: boolean
+        writable: true
+      - name: bayPowerMeasFlag
+        comment: Indicates the presence/absence of active/reactive power measurements.
+        schema: boolean
+        writable: true
+      - name: BusbarConfiguration
+        comment: Busbar layout for bay.
+        schema:
+          - type: Enum
+            valueSchema: string
+            enumValues:
+              - name: singleBus
+                displayName: singleBus
+                enumValue: singleBus
+              - name: doubleBus
+                displayName: doubleBus
+                enumValue: doubleBus
+              - name: mainWithTransfer
+                displayName: mainWithTransfer
+                enumValue: mainWithTransfer
+              - name: ringBus
+                displayName: ringBus
+                enumValue: ringBus
+        writable: true
+      - name: bayEnergyMeasFlag
+        comment: Indicates the presence/absence of energy measurements.
+        schema: boolean
+        writable: true
+    relationship:
+      - name: VoltageLevel
+        target: dtmi:digitaltwins:ngsi_ld:cim:energy:VoltageLevel;1
+        comment: The voltage level containing this bay.
+        displayName: VoltageLevel
+      - name: memberOfSubstation
+        target: dtmi:digitaltwins:ngsi_ld:cim:energy:Substation;1
+        comment: The substation containing this bay.
+        displayName: memberOfSubstation

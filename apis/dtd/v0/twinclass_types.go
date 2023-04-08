@@ -47,11 +47,11 @@ type TwinClassAttributes struct {
 	Type string `json:"type,omitempty"`
 }
 
-type TwinRelationship struct {
-	Name         string       `json:"name,omitempty"`
-	Multiplicity Multiplicity `json:"multiplicity,omitempty"`
-	Reference    string       `json:"ref,omitempty"`
-}
+// type TwinRelationship struct {
+// 	Name         string       `json:"name,omitempty"`
+// 	Multiplicity Multiplicity `json:"multiplicity,omitempty"`
+// 	Reference    string       `json:"ref,omitempty"`
+// }
 
 // TwinClassStatus defines the observed state of TwinClass
 type TwinClassStatus struct {

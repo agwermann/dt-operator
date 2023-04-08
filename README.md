@@ -184,8 +184,8 @@ make install
 4. Install Camel-k
 
 ```sh
-kubectl -n default create secret docker-registry external-registry-secret --docker-username <DOCKER_USERNAME> --docker-password <DOCKER_PASSWORD> -n dt-core
-kamel install --operator-image=docker.io/apache/camel-k:1.10.3 --olm=false -n dt-core --global --registry docker.io --organization agwermann --registry-secret external-registry-secret --force
+kubectl -n default create secret docker-registry external-registry-secret --docker-username <DOCKER_USERNAME> --docker-password <DOCKER_PASSWORD> -n core
+kamel install --operator-image=docker.io/apache/camel-k:1.10.3 --olm=false -n core --global --registry docker.io --organization agwermann --registry-secret external-registry-secret --force
 ```
 
 ## Install Digital Twin Platform
@@ -232,3 +232,6 @@ The platform uses Cloud Event specification for describing event data within the
     - Machine4
         - Sensor3
         - Sensor4
+
+
+kubectl port-forward --address 0.0.0.0 deployment.apps/mqtt-message-broker-deployment 1883:1883 -n core

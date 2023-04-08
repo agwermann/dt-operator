@@ -1,0 +1,20 @@
+apiVersion: dtd.digitaltwin/v0
+kind: TwinInstance
+metadata:
+  name: temperature-sensor-01
+spec:
+  name: temperature-sensor-01
+  parentInstance: machine-twin-01
+  component:
+    name: temperature-sensor
+  events: # Dado capturado vs operacao interna que venha a gerar um evento
+    # - filter:
+    #     type: event.machine-01
+      sink: factory-twin-01
+  template:
+    spec:
+      containers:
+        - name: edge-service
+          image: agwermann/manufactoring-service:0.1
+          imagePullPolicy: Always
+          args: ["http://mqtt-response-handler", "80"]

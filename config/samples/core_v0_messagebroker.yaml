@@ -2,6 +2,6 @@ apiVersion: core.digitaltwin/v0
 kind: MessageBroker
 metadata:
   name: mqtt-message-broker
-  namespace: dt-core
+  namespace: default
 spec:
   type: mqtt

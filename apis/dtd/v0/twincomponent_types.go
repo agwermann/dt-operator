@@ -20,6 +20,8 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// TODO: review if component is a good name because DTDL has a component too
+
 type TwinComponentPhase string
 
 const (
@@ -37,9 +39,30 @@ type TwinComponentSpec struct {
 }
 
 type TwinComponentSchema struct {
-	Identifier string                   `json:"identifier,omitempty"`
-	Attributes []TwinComponentAttribute `json:"attributes,omitempty"`
+	Identifier    string                   `json:"identifier,omitempty"`
+	Attributes    []TwinComponentAttribute `json:"attributes,omitempty"`
+	Properties    []TwinProperty           `json:"properties,omitempty"`
+	Commands      []TwinCommand            `json:"commands,omitempty"`
+	Relationships []TwinRelationship       `json:"relationships,omitempty"`
+	Telemetries   []TwinTelemetry          `json:"telemetries,omitempty"`
+	//Components    []TwinComponent          `json:"components,omitempty"`
 }
+
+type TwinProperty struct {
+}
+
+type TwinCommand struct {
+}
+
+type TwinRelationship struct {
+}
+
+type TwinTelemetry struct {
+}
+
+// TODO: review this definition
+// type Component struct {
+// }
 
 type TwinComponentAttribute struct {
 	Name string `json:"name,omitempty"`

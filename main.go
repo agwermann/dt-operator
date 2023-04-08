@@ -110,13 +110,6 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "TwinEnum")
 		os.Exit(1)
 	}
-	if err = (&controllers.TwinServiceReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "TwinService")
-		os.Exit(1)
-	}
 	if err = (&controllers.TwinInstanceReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),

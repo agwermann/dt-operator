@@ -1,3 +1,6 @@
+# Exemplos
+# Trabalho Neto - Usar como use case
+
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
 metadata:
@@ -35,6 +38,10 @@ spec:
   parentInstance: factory-twin-02
   component:
     name: machine
+  events: # Dado capturado vs operacao interna que venha a gerar um evento
+    - filter:
+        type: event.machine-01
+      sink: factory-twin-01
 ---
 apiVersion: dtd.digitaltwin/v0
 kind: TwinInstance
@@ -45,6 +52,8 @@ spec:
   parentInstance: machine-twin-01
   component:
     name: temperature-sensor
+  events:
+    - sink: machine-twin-01
   template:
     spec:
       containers:
@@ -52,55 +61,67 @@ spec:
           image: agwermann/manufactoring-service:0.1
           imagePullPolicy: Always
           args: ["http://mqtt-response-handler", "80"]
+
+# Use cases
+# Olhar trabalho Neto
+# Pai processar o dado do filho
+# Filho processa a mensagem antes de armazenar (container do usuário)
+# Ser capaz de armazenar histórico de eventos
+# Eventos propagar apenas para o pai parte deles
+# Eventos propagar apenas para o pai
+# Temperature média das válvulas nos pais (aggregate)
+
 ---
-apiVersion: dtd.digitaltwin/v0
-kind: TwinInstance
-metadata:
-  name: pressure-sensor-01
-spec:
-  name: pressure-sensor-01
-  parentInstance: machine-twin-01
-  component:
-    name: pressure-sensor
-  template:
-    spec:
-      containers:
-        - name: edge-service
-          image: agwermann/manufactoring-service:0.1
-          imagePullPolicy: Always
-          args: ["http://mqtt-response-handler", "80"]
----
-apiVersion: dtd.digitaltwin/v0
-kind: TwinInstance
-metadata:
-  name: temperature-sensor-02
-spec:
-  name: temperature-sensor-02
-  parentInstance: machine-twin-02
-  component:
-    name: temperature-sensor
-  template:
-    spec:
-      containers:
-        - name: edge-service
-          image: agwermann/manufactoring-service:0.1
-          imagePullPolicy: Always
-          args: ["http://mqtt-response-handler", "80"]
----
-apiVersion: dtd.digitaltwin/v0
-kind: TwinInstance
-metadata:
-  name: pressure-sensor-02
-spec:
-  name: pressure-sensor-02
-  parentInstance: machine-twin-02
-  component:
-    name: pressure-sensor
-  template:
-    spec:
-      containers:
-        - name: edge-service
-          image: agwermann/manufactoring-service:0.1
-          imagePullPolicy: Always
-          args: ["http://mqtt-response-handler", "80"]
----
+# Multiple Topics (Parent subscribe to all children)
+# ---
+# apiVersion: dtd.digitaltwin/v0
+# kind: TwinInstance
+# metadata:
+#   name: pressure-sensor-01
+# spec:
+#   name: pressure-sensor-01
+#   parentInstance: machine-twin-01
+#   component:
+#     name: pressure-sensor
+#   template:
+#     spec:
+#       containers:
+#         - name: edge-service
+#           image: agwermann/manufactoring-service:0.1
+#           imagePullPolicy: Always
+#           args: ["http://mqtt-response-handler", "80"]
+# ---
+# apiVersion: dtd.digitaltwin/v0
+# kind: TwinInstance
+# metadata:
+#   name: temperature-sensor-02
+# spec:
+#   name: temperature-sensor-02
+#   parentInstance: machine-twin-02
+#   component:
+#     name: temperature-sensor
+#   template:
+#     spec:
+#       containers:
+#         - name: edge-service
+#           image: agwermann/manufactoring-service:0.1
+#           imagePullPolicy: Always
+#           args: ["http://mqtt-response-handler", "80"]
+# ---
+# apiVersion: dtd.digitaltwin/v0
+# kind: TwinInstance
+# metadata:
+#   name: pressure-sensor-02
+# spec:
+#   name: pressure-sensor-02
+#   parentInstance: machine-twin-02
+#   component:
+#     name: pressure-sensor
+#   template:
+#     spec:
+#       containers:
+#         - name: edge-service
+#           image: agwermann/manufactoring-service:0.1
+#           imagePullPolicy: Always
+#           args: ["http://mqtt-response-handler", "80"]
+# ---

@@ -150,3 +150,8 @@ $(CONTROLLER_GEN): $(LOCALBIN)
 envtest: $(ENVTEST) ## Download envtest-setup locally if necessary.
 $(ENVTEST): $(LOCALBIN)
 	test -s $(LOCALBIN)/setup-envtest || GOBIN=$(LOCALBIN) go install sigs.k8s.io/controller-runtime/tools/setup-envtest@latest
+
+dtdl:
+	go run cmd/cli/main.go $(INPUT_FOLDER) $(OUTPUT_FOLDER)
+
+# make dtdl INPUT_FOLDER=~/workspace/master/dt-platform/examples/opendigitaltwins-energygrid/Ontology/Core OUTPUT_FOLDER=~/workspace/master/dt-platform/examples/opendigitaltwins-energygrid-output
