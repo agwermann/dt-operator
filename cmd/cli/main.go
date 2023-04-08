@@ -91,57 +91,19 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 	for _, content := range tInterface.Contents {
 
 		if content.Property != nil {
-			twinSchema := createTwinSchema(content.Property.Schema)
-			property := apiv0.TwinProperty{
-				Id:          string(content.Property.Id),
-				Comment:     content.Property.Comment,
-				Description: string(content.Property.Description),
-				DisplayName: string(content.Property.DisplayName),
-				Name:        content.Property.Name,
-				Writeable:   content.Property.Writeable,
-				Schema:      twinSchema,
-			}
-			properties = append(properties, property)
+			properties = processProperty(*content.Property, properties)
 		}
 
 		if content.Relationship != nil {
-			twinSchema := createTwinSchema(content.Relationship.Schema)
-			relationship := apiv0.TwinRelationship{
-				Id:              string(content.Relationship.Id),
-				Comment:         content.Relationship.Comment,
-				Description:     string(content.Relationship.Description),
-				DisplayName:     string(content.Relationship.DisplayName),
-				Name:            content.Relationship.Name,
-				Writeable:       content.Relationship.Writeable,
-				MaxMultiplicity: content.Relationship.MaxMultiplicity,
-				MinMultiplicity: content.Relationship.MinMultiplicity,
-				Schema:          twinSchema,
-			}
-			relationships = append(relationships, relationship)
+			relationships = processRelationship(*content.Relationship, relationships)
 		}
 
 		if content.Telemetry != nil {
-			twinSchema := createTwinSchema(content.Telemetry.Schema)
-			telemetry := apiv0.TwinTelemetry{
-				Id:          string(content.Relationship.Id),
-				Comment:     content.Relationship.Comment,
-				Description: string(content.Relationship.Description),
-				DisplayName: string(content.Relationship.DisplayName),
-				Name:        content.Relationship.Name,
-				Schema:      twinSchema,
-			}
-			telemetries = append(telemetries, telemetry)
+			telemetries = processTelemetry(*content.Telemetry, telemetries)
 		}
 
 		if content.Command != nil {
-			command := apiv0.TwinCommand{
-				Id:          string(content.Relationship.Id),
-				Comment:     content.Relationship.Comment,
-				Description: string(content.Relationship.Description),
-				DisplayName: string(content.Relationship.DisplayName),
-				Name:        content.Relationship.Name,
-			}
-			commands = append(commands, command)
+			commands = processCommand(*content.Command, commands)
 		}
 
 	}
@@ -161,6 +123,64 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 	}
 
 	return twinInterface
+}
+
+func processCommand(command dtdl.Command, commands []apiv0.TwinCommand) []apiv0.TwinCommand {
+	newCommand := apiv0.TwinCommand{
+		Id:          string(command.Id),
+		Comment:     command.Comment,
+		Description: string(command.Description),
+		DisplayName: string(command.DisplayName),
+		Name:        command.Name,
+	}
+	commands = append(commands, newCommand)
+	return commands
+}
+
+func processTelemetry(telemetry dtdl.Telemetry, telemetries []apiv0.TwinTelemetry) []apiv0.TwinTelemetry {
+	twinSchema := createTwinSchema(telemetry.Schema)
+	newTelemetry := apiv0.TwinTelemetry{
+		Id:          string(telemetry.Id),
+		Comment:     telemetry.Comment,
+		Description: string(telemetry.Description),
+		DisplayName: string(telemetry.DisplayName),
+		Name:        telemetry.Name,
+		Schema:      twinSchema,
+	}
+	telemetries = append(telemetries, newTelemetry)
+	return telemetries
+}
+
+func processRelationship(relationship dtdl.Relationship, relationships []apiv0.TwinRelationship) []apiv0.TwinRelationship {
+	twinSchema := createTwinSchema(relationship.Schema)
+	newRelationship := apiv0.TwinRelationship{
+		Id:              string(relationship.Id),
+		Comment:         relationship.Comment,
+		Description:     string(relationship.Description),
+		DisplayName:     string(relationship.DisplayName),
+		Name:            relationship.Name,
+		Writeable:       relationship.Writeable,
+		MaxMultiplicity: relationship.MaxMultiplicity,
+		MinMultiplicity: relationship.MinMultiplicity,
+		Schema:          twinSchema,
+	}
+	relationships = append(relationships, newRelationship)
+	return relationships
+}
+
+func processProperty(property dtdl.Property, properties []apiv0.TwinProperty) []apiv0.TwinProperty {
+	twinSchema := createTwinSchema(property.Schema)
+	newProperty := apiv0.TwinProperty{
+		Id:          string(property.Id),
+		Comment:     property.Comment,
+		Description: string(property.Description),
+		DisplayName: string(property.DisplayName),
+		Name:        property.Name,
+		Writeable:   property.Writeable,
+		Schema:      twinSchema,
+	}
+	properties = append(properties, newProperty)
+	return properties
 }
 
 func createTwinInstanceK8sResources(twinInterface apiv0.TwinComponent) apiv0.TwinInstance {
