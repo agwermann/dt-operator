@@ -32,7 +32,7 @@ const (
 
 // TwinInstanceSpec defines the desired state of TwinInstance
 type TwinInstanceSpec struct {
-	Name           string                 `json:"name,omitempty"`
+	Id             string                 `json:"id,omitempty"`
 	ParentInstance string                 `json:"parentInstance,omitempty"`
 	Component      TwinComponentSpec      `json:"component,omitempty"`
 	Template       corev1.PodTemplateSpec `json:"template,omitempty"`

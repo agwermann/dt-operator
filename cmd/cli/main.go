@@ -56,10 +56,13 @@ func main() {
 				}
 				//twinYaml, err := yaml.Marshal(twinInterface)
 
-				tw := createTwinInterfaceK8sResource(twinInterface)
+				ti := createTwinInterfaceK8sResource(twinInterface)
+				tinstance := createTwinInstanceK8sResources(ti)
 
 				yamlBuffer := new(bytes.Buffer)
-				serializer.Encode(&tw, yamlBuffer)
+				serializer.Encode(&ti, yamlBuffer)
+				yamlBuffer.Write([]byte("---\n"))
+				serializer.Encode(&tinstance, yamlBuffer)
 
 				fmt.Printf(yamlBuffer.String())
 
@@ -71,7 +74,6 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
-				return
 			}
 		}
 	}
@@ -146,7 +148,7 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 
 	twinInterface := apiv0.TwinComponent{
 		TypeMeta: v1.TypeMeta{
-			Kind:       "TwinComponent",
+			Kind:       "TwinInterface",
 			APIVersion: "dtd.digitaltwin/v0",
 		},
 		Spec: apiv0.TwinComponentSpec{
@@ -159,6 +161,23 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 	}
 
 	return twinInterface
+}
+
+func createTwinInstanceK8sResources(twinInterface apiv0.TwinComponent) apiv0.TwinInstance {
+	twinInstance := apiv0.TwinInstance{
+		TypeMeta: v1.TypeMeta{
+			Kind:       "TwinInstance",
+			APIVersion: "dtd.digitaltwin/v0",
+		},
+		Spec: apiv0.TwinInstanceSpec{
+			Id: twinInterface.Spec.Id + "_interface",
+			Component: apiv0.TwinComponentSpec{
+				Id: twinInterface.Spec.Id,
+			},
+		},
+	}
+
+	return twinInstance
 }
 
 func createTwinSchema(schema dtdl.Schema) apiv0.TwinSchema {
