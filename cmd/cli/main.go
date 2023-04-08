@@ -152,6 +152,15 @@ func processTelemetry(telemetry dtdl.Telemetry, telemetries []apiv0.TwinTelemetr
 }
 
 func processRelationship(relationship dtdl.Relationship, relationships []apiv0.TwinRelationship) []apiv0.TwinRelationship {
+
+	var relationshipProperties []apiv0.TwinProperty
+
+	if relationship.Properties != nil {
+		for _, property := range relationship.Properties {
+			relationshipProperties = processProperty(property, relationshipProperties)
+		}
+	}
+
 	twinSchema := createTwinSchema(relationship.Schema)
 	newRelationship := apiv0.TwinRelationship{
 		Id:              string(relationship.Id),
@@ -163,6 +172,8 @@ func processRelationship(relationship dtdl.Relationship, relationships []apiv0.T
 		MaxMultiplicity: relationship.MaxMultiplicity,
 		MinMultiplicity: relationship.MinMultiplicity,
 		Schema:          twinSchema,
+		Properties:      relationshipProperties,
+		Target:          string(relationship.Target),
 	}
 	relationships = append(relationships, newRelationship)
 	return relationships
