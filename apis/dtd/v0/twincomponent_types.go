@@ -31,43 +31,93 @@ const (
 	TwinComponentPhaseFailed  TwinComponentPhase = "Failed"
 )
 
+type PrimitiveType string
+type Multiplicity string
+
+const (
+	Integer PrimitiveType = "integer"
+	String  PrimitiveType = "string"
+	Boolean PrimitiveType = "boolean"
+	Double  PrimitiveType = "double"
+)
+
+const (
+	ONE  Multiplicity = "one"
+	MANY Multiplicity = "many"
+)
+
 // TwinComponentSpec defines the desired state of TwinComponent
 type TwinComponentSpec struct {
-	Name   string              `json:"name,omitempty"`
-	Parent string              `json:"parent,omitempty"`
-	Schema TwinComponentSchema `json:"schema,omitempty"`
-}
-
-type TwinComponentSchema struct {
-	Identifier    string                   `json:"identifier,omitempty"`
-	Attributes    []TwinComponentAttribute `json:"attributes,omitempty"`
-	Properties    []TwinProperty           `json:"properties,omitempty"`
-	Commands      []TwinCommand            `json:"commands,omitempty"`
-	Relationships []TwinRelationship       `json:"relationships,omitempty"`
-	Telemetries   []TwinTelemetry          `json:"telemetries,omitempty"`
-	//Components    []TwinComponent          `json:"components,omitempty"`
+	Id            string             `json:"id,omitempty"`
+	Properties    []TwinProperty     `json:"properties,omitempty"`
+	Commands      []TwinCommand      `json:"commands,omitempty"`
+	Relationships []TwinRelationship `json:"relationships,omitempty"`
+	Telemetries   []TwinTelemetry    `json:"telemetries,omitempty"`
 }
 
 type TwinProperty struct {
+	Id          string     `json:"id,omitempty"`
+	Comment     string     `json:"comment,omitempty"`
+	Description string     `json:"description,omitempty"`
+	DisplayName string     `json:"displayName,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	Schema      TwinSchema `json:"schema,omitempty"`
+	Writeable   bool       `json:"writable,omitempty"`
 }
 
 type TwinCommand struct {
+	Id          string `json:"id,omitempty"`
+	Comment     string `json:"comment,omitempty"`
+	Description string `json:"description,omitempty"`
+	DisplayName string `json:"displayName,omitempty"`
+	Name        string `json:"name,omitempty"`
+	// Request     CommandRequest  `json:"request"`
+	// Response    CommandResponse `json:"response"`
 }
 
 type TwinRelationship struct {
+	Id              string         `json:"id,omitempty"`
+	Comment         string         `json:"comment,omitempty"`
+	Description     string         `json:"description,omitempty"`
+	DisplayName     string         `json:"displayName,omitempty"`
+	MaxMultiplicity int            `json:"maxMultiplicity,omitempty"`
+	MinMultiplicity int            `json:"minMultiplicity,omitempty"`
+	Name            string         `json:"name,omitempty"`
+	Properties      []TwinProperty `json:"properties,omitempty"`
+	Target          string         `json:"target,omitempty"`
+	Schema          TwinSchema     `json:"schema,omitempty"`
+	Writeable       bool           `json:"writeable,omitempty"`
 }
 
 type TwinTelemetry struct {
+	Id          string     `json:"id,omitempty"`
+	Comment     string     `json:"comment,omitempty"`
+	Description string     `json:"description,omitempty"`
+	DisplayName string     `json:"displayName,omitempty"`
+	Name        string     `json:"name,omitempty"`
+	Schema      TwinSchema `json:"schema,omitempty"`
 }
 
-// TODO: review this definition
+type TwinSchema struct {
+	PrimitiveType PrimitiveType  `json:"primitiveType,omitempty"`
+	EnumType      TwinEnumSchema `json:"enumType,omitempty"`
+}
+
+type TwinEnumSchema struct {
+	ValueSchema PrimitiveType          `json:"valueSchema,omitempty"`
+	EnumValues  []TwinEnumSchemaValues `json:"enumValues,omitempty"`
+}
+
+type TwinEnumSchemaValues struct {
+	Name        string `json:"name,omitempty"`
+	DisplayName string `json:"displayName,omitempty"`
+	EnumValue   string `json:"enumValue,omitempty"`
+}
+
+// TODO: review this definition: rename TwinComponent to TwinInterface
+// TODO: TwinInstance instantiate the TwinInterface
 // type Component struct {
 // }
-
-type TwinComponentAttribute struct {
-	Name string `json:"name,omitempty"`
-	Type string `json:"type,omitempty"`
-}
 
 // TwinComponentStatus defines the observed state of TwinComponent
 type TwinComponentStatus struct {

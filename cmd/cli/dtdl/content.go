@@ -23,11 +23,11 @@ func ErrContentUnmarshalTypeNotSupported(typeValue string) error {
 }
 
 type Content struct {
-	command      Command
-	component    Component
-	property     Property
-	relationship Relationship
-	telemetry    Telemetry
+	Command      *Command
+	Component    *Component
+	Property     *Property
+	Relationship *Relationship
+	Telemetry    *Telemetry
 }
 
 func (c *Content) UnmarshalJSON(data []byte) error {
@@ -44,10 +44,10 @@ func (c *Content) UnmarshalJSON(data []byte) error {
 
 	switch objectMap["@type"] {
 	case ContentPropertyType:
-		c.property = c.newProperty(objectMap)
+		c.Property = c.newProperty(objectMap)
 		return nil
 	case ContentRelationshipType:
-		c.relationship = c.newRelationship(objectMap)
+		c.Relationship = c.newRelationship(objectMap)
 		return nil
 	case ContentCommandType:
 		return ErrContentUnmarshalTypeNotSupported(objectType)
@@ -61,30 +61,30 @@ func (c *Content) UnmarshalJSON(data []byte) error {
 }
 
 func (c Content) MarshalYAML() (interface{}, error) {
-	if !reflect.DeepEqual(c.command, Command{}) {
-		return c.command, nil
+	if !reflect.DeepEqual(c.Command, Command{}) {
+		return c.Command, nil
 	}
 
-	if !reflect.DeepEqual(c.relationship, Relationship{}) {
-		return c.relationship, nil
+	if !reflect.DeepEqual(c.Relationship, Relationship{}) {
+		return c.Relationship, nil
 	}
 
-	if !reflect.DeepEqual(c.property, Property{}) {
-		return c.property, nil
+	if !reflect.DeepEqual(c.Property, Property{}) {
+		return c.Property, nil
 	}
 
-	if !reflect.DeepEqual(c.telemetry, Telemetry{}) {
-		return c.telemetry, nil
+	if !reflect.DeepEqual(c.Telemetry, Telemetry{}) {
+		return c.Telemetry, nil
 	}
 
-	if !reflect.DeepEqual(c.component, Component{}) {
-		return c.telemetry, nil
+	if !reflect.DeepEqual(c.Component, Component{}) {
+		return c.Component, nil
 	}
 
 	return nil, errors.New("Not possible to marshal Yaml")
 }
 
-func (s *Content) newProperty(data interface{}) Property {
+func (s *Content) newProperty(data interface{}) *Property {
 	property := Property{}
 
 	dataByte, err := json.Marshal(data)
@@ -99,10 +99,10 @@ func (s *Content) newProperty(data interface{}) Property {
 		log.Fatal("Error in unmarshaling")
 	}
 
-	return property
+	return &property
 }
 
-func (s *Content) newRelationship(data interface{}) Relationship {
+func (s *Content) newRelationship(data interface{}) *Relationship {
 	relationship := Relationship{}
 
 	dataByte, err := json.Marshal(data)
@@ -117,5 +117,5 @@ func (s *Content) newRelationship(data interface{}) Relationship {
 		log.Fatal("Error in unmarshaling")
 	}
 
-	return relationship
+	return &relationship
 }

@@ -40,9 +40,9 @@ var (
 // Object - Not supported
 
 type Schema struct {
-	isDefaultSchema    bool
-	defaultSchemaValue string
-	enumSchema         EnumSchema
+	IsDefaultSchema    bool
+	DefaultSchemaValue string
+	EnumSchema         EnumSchema
 }
 
 type EnumSchema struct {
@@ -69,8 +69,8 @@ func (s *Schema) UnmarshalJSON(data []byte) error {
 	case string:
 		// TODO: check if the type is valid
 		*s = Schema{
-			isDefaultSchema:    true,
-			defaultSchemaValue: object,
+			IsDefaultSchema:    true,
+			DefaultSchemaValue: object,
 		}
 		return nil
 	case nil:
@@ -83,8 +83,8 @@ func (s *Schema) UnmarshalJSON(data []byte) error {
 		}
 
 		*s = Schema{
-			isDefaultSchema: false,
-			enumSchema:      enumSchema,
+			IsDefaultSchema: false,
+			EnumSchema:      enumSchema,
 		}
 
 		return nil
@@ -94,20 +94,20 @@ func (s *Schema) UnmarshalJSON(data []byte) error {
 }
 
 func (s *Schema) MarshalJSON() ([]byte, error) {
-	if s.isDefaultSchema {
-		return json.Marshal(s.defaultSchemaValue)
+	if s.IsDefaultSchema {
+		return json.Marshal(s.DefaultSchemaValue)
 	}
 
-	return json.Marshal(s.enumSchema)
+	return json.Marshal(s.EnumSchema)
 }
 
 func (s Schema) MarshalYAML() (interface{}, error) {
-	if s.isDefaultSchema {
+	if s.IsDefaultSchema {
 		fmt.Println("Default schema")
-		return s.defaultSchemaValue, nil
+		return s.DefaultSchemaValue, nil
 	}
 	fmt.Println("Enum schema")
-	return s.enumSchema, nil
+	return s.EnumSchema, nil
 }
 
 // Schema

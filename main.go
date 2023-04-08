@@ -96,13 +96,6 @@ func main() {
 		setupLog.Error(err, "unable to start manager")
 		os.Exit(1)
 	}
-	if err = (&controllers.TwinClassReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
-	}).SetupWithManager(mgr); err != nil {
-		setupLog.Error(err, "unable to create controller", "controller", "TwinClass")
-		os.Exit(1)
-	}
 	if err = (&controllers.TwinEnumReconciler{
 		Client: mgr.GetClient(),
 		Scheme: mgr.GetScheme(),
