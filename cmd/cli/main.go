@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -13,6 +12,7 @@ import (
 	apiv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
 	dtdl "github.com/agwermann/dt-operator/cmd/cli/dtdl"
 	pkg "github.com/agwermann/dt-operator/cmd/cli/pkg"
+	corev1 "k8s.io/api/core/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	k8sJson "k8s.io/apimachinery/pkg/runtime/serializer/json"
 )
@@ -64,7 +64,7 @@ func main() {
 				yamlBuffer.Write([]byte("---\n"))
 				serializer.Encode(&tinstance, yamlBuffer)
 
-				fmt.Printf(yamlBuffer.String())
+				//fmt.Printf(yamlBuffer.String())
 
 				if err != nil {
 					log.Fatal(err)
@@ -201,9 +201,19 @@ func createTwinInstanceK8sResources(twinInterface apiv0.TwinComponent) apiv0.Twi
 			APIVersion: "dtd.digitaltwin/v0",
 		},
 		Spec: apiv0.TwinInstanceSpec{
-			Id: twinInterface.Spec.Id + "_interface",
+			Id: twinInterface.Spec.Id + "-instance",
 			Component: apiv0.TwinComponentSpec{
 				Id: twinInterface.Spec.Id,
+			},
+			Template: corev1.PodTemplateSpec{
+				Spec: corev1.PodSpec{Containers: []corev1.Container{
+					{
+						Name:            "ktwin/" + twinInterface.Spec.Id,
+						Image:           "ktwin/" + twinInterface.Spec.Id + ":0.0.1",
+						ImagePullPolicy: corev1.PullIfNotPresent,
+						Args:            []string{"http://mqtt-response-handler", "80"},
+					},
+				}},
 			},
 		},
 	}
