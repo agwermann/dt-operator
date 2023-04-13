@@ -87,25 +87,28 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 	var relationships []apiv0.TwinRelationship
 	var telemetries []apiv0.TwinTelemetry
 	var commands []apiv0.TwinCommand
+	var extendedComponents []apiv0.TwinComponentSpec
 
 	for _, content := range tInterface.Contents {
-
 		if content.Property != nil {
 			properties = processProperty(*content.Property, properties)
 		}
-
 		if content.Relationship != nil {
 			relationships = processRelationship(*content.Relationship, relationships)
 		}
-
 		if content.Telemetry != nil {
 			telemetries = processTelemetry(*content.Telemetry, telemetries)
 		}
-
 		if content.Command != nil {
 			commands = processCommand(*content.Command, commands)
 		}
+	}
 
+	for _, extendComponent := range tInterface.Extends {
+		component := apiv0.TwinComponentSpec{
+			Id: extendComponent,
+		}
+		extendedComponents = append(extendedComponents, component)
 	}
 
 	twinInterface := apiv0.TwinComponent{
@@ -119,6 +122,7 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 			Relationships: relationships,
 			Commands:      commands,
 			Telemetries:   telemetries,
+			Extends:       extendedComponents,
 		},
 	}
 
