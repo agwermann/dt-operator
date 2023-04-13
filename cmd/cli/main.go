@@ -82,7 +82,6 @@ func main() {
 
 // TODO: renew TwinComponent to TwinInstance
 func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinComponent {
-
 	var properties []apiv0.TwinProperty
 	var relationships []apiv0.TwinRelationship
 	var telemetries []apiv0.TwinTelemetry
@@ -118,6 +117,9 @@ func createTwinInterfaceK8sResource(tInterface dtdl.Interface) apiv0.TwinCompone
 		},
 		Spec: apiv0.TwinComponentSpec{
 			Id:            string(tInterface.Id),
+			DisplayName:   string(tInterface.DisplayName),
+			Description:   string(tInterface.Description),
+			Comment:       string(tInterface.Comment),
 			Properties:    properties,
 			Relationships: relationships,
 			Commands:      commands,
