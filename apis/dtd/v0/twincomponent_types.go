@@ -48,15 +48,19 @@ const (
 
 // TwinComponentSpec defines the desired state of TwinComponent
 type TwinComponentSpec struct {
-	Id            string              `json:"id,omitempty"`
-	DisplayName   string              `json:"displayName,omitempty"`
-	Description   string              `json:"description,omitempty"`
-	Comment       string              `json:"comment,omitempty"`
-	Properties    []TwinProperty      `json:"properties,omitempty"`
-	Commands      []TwinCommand       `json:"commands,omitempty"`
-	Relationships []TwinRelationship  `json:"relationships,omitempty"`
-	Telemetries   []TwinTelemetry     `json:"telemetries,omitempty"`
-	Extends       []TwinComponentSpec `json:"extends,omitempty"`
+	Id            string                   `json:"id,omitempty"`
+	DisplayName   string                   `json:"displayName,omitempty"`
+	Description   string                   `json:"description,omitempty"`
+	Comment       string                   `json:"comment,omitempty"`
+	Properties    []TwinProperty           `json:"properties,omitempty"`
+	Commands      []TwinCommand            `json:"commands,omitempty"`
+	Relationships []TwinRelationship       `json:"relationships,omitempty"`
+	Telemetries   []TwinTelemetry          `json:"telemetries,omitempty"`
+	Extends       TwinComponentExtendsSpec `json:"extends"`
+}
+
+type TwinComponentExtendsSpec struct {
+	Id string `json:"id,omitempty"`
 }
 
 type TwinProperty struct {
