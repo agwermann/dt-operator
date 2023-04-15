@@ -155,3 +155,28 @@ dtdl:
 	go run cmd/cli/main.go $(INPUT_FOLDER) $(OUTPUT_FOLDER)
 
 # make dtdl INPUT_FOLDER=~/workspace/master/dt-platform/examples/opendigitaltwins-energygrid/Ontology/Core OUTPUT_FOLDER=~/workspace/master/dt-platform/examples/opendigitaltwins-energygrid-output
+
+local-setup:
+	make create-local-cluster
+	make load-local-docker-images
+	make load-local-k8s-resources
+
+local-local-ktwin:
+	make install
+
+create-local-cluster:
+	kind delete cluster
+	kind create cluster --config scripts/kind-config.yaml
+
+load-local-docker-images:
+#	kind load docker-image dev.local/edge-service:0.1
+
+load-local-k8s-resources:
+# Knative Serving
+# 	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-crds.yaml
+# 	kubectl apply -f https://github.com/knative/serving/releases/download/knative-v1.8.0/serving-core.yaml
+# 	kubectl get pods --namespace knative-serving
+# # Knative Eventing
+# 	kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.8.0/eventing-crds.yaml
+# 	kubectl apply -f https://github.com/knative/eventing/releases/download/knative-v1.8.0/eventing-core.yaml
+# 	kubectl get pods --namespace knative-eventing
