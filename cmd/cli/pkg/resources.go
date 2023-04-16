@@ -90,7 +90,7 @@ func (r *resourceBuilder) CreateTwinInstance(twinInterface apiv0.TwinInterface) 
 		},
 		Spec: apiv0.TwinInstanceSpec{
 			Id: twinInterface.Spec.Id + "-instance",
-			Component: apiv0.TwinInterfaceSpec{
+			Interface: apiv0.TwinInterfaceSpec{
 				Id: twinInterface.Spec.Id,
 			},
 			Template: corev1.PodTemplateSpec{

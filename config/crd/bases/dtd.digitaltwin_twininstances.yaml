@@ -35,7 +35,9 @@ spec:
           spec:
             description: TwinInstanceSpec defines the desired state of TwinInstance
             properties:
-              component:
+              id:
+                type: string
+              interface:
                 description: TwinInterfaceSpec defines the desired state of TwinInterface
                 properties:
                   commands:
@@ -225,8 +227,6 @@ spec:
                 required:
                 - extends
                 type: object
-              id:
-                type: string
               parentInstance:
                 type: string
               template:

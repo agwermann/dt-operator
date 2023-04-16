@@ -34,7 +34,7 @@ const (
 type TwinInstanceSpec struct {
 	Id             string                 `json:"id,omitempty"`
 	ParentInstance string                 `json:"parentInstance,omitempty"`
-	Component      TwinInterfaceSpec      `json:"component,omitempty"`
+	Interface      TwinInterfaceSpec      `json:"interface,omitempty"`
 	Template       corev1.PodTemplateSpec `json:"template,omitempty"`
 }
 
