@@ -9,7 +9,7 @@ kubectl api-resources
 ```
 
 ```sh
-kubectl get twincomponent
+kubectl get TwinInterface
 kubectl get twininstance
 kubectl get messagebrokers
 ```
@@ -125,7 +125,7 @@ kubebuilder init --domain digitaltwin --repo github.com/agwermann/dt-operator
 Create Digital Twin Definition API resources:
 
 ```bash
-kubebuilder create api --group dtd --version v0 --kind TwinComponent
+kubebuilder create api --group dtd --version v0 --kind TwinInterface
 kubebuilder create api --group dtd --version v0 --kind TwinInstance
 ```
 

@@ -5,20 +5,20 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.9.2
   creationTimestamp: null
-  name: twincomponents.dtd.digitaltwin
+  name: twininterfaces.dtd.digitaltwin
 spec:
   group: dtd.digitaltwin
   names:
-    kind: TwinComponent
-    listKind: TwinComponentList
-    plural: twincomponents
-    singular: twincomponent
+    kind: TwinInterface
+    listKind: TwinInterfaceList
+    plural: twininterfaces
+    singular: twininterface
   scope: Namespaced
   versions:
   - name: v0
     schema:
       openAPIV3Schema:
-        description: TwinComponent is the Schema for the twincomponents API
+        description: TwinInterface is the Schema for the TwinInterfaces API
         properties:
           apiVersion:
             description: 'APIVersion defines the versioned schema of this representation
@@ -33,7 +33,7 @@ spec:
           metadata:
             type: object
           spec:
-            description: TwinComponentSpec defines the desired state of TwinComponent
+            description: TwinInterfaceSpec defines the desired state of TwinInterface
             properties:
               commands:
                 items:
@@ -223,7 +223,7 @@ spec:
             - extends
             type: object
           status:
-            description: TwinComponentStatus defines the observed state of TwinComponent
+            description: TwinInterfaceStatus defines the observed state of TwinInterface
             properties:
               status:
                 type: string

@@ -27,26 +27,26 @@ import (
 	dtdv0 "github.com/agwermann/dt-operator/apis/dtd/v0"
 )
 
-// TwinComponentReconciler reconciles a TwinComponent object
-type TwinComponentReconciler struct {
+// TwinInterfaceReconciler reconciles a TwinInterface object
+type TwinInterfaceReconciler struct {
 	client.Client
 	Scheme *runtime.Scheme
 }
 
-//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twincomponents,verbs=get;list;watch;create;update;patch;delete
-//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twincomponents/status,verbs=get;update;patch
-//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twincomponents/finalizers,verbs=update
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twininterfaces,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twininterfaces/status,verbs=get;update;patch
+//+kubebuilder:rbac:groups=dtd.digitaltwin,resources=twininterfaces/finalizers,verbs=update
 
 // Reconcile is part of the main kubernetes reconciliation loop which aims to
 // move the current state of the cluster closer to the desired state.
 // TODO(user): Modify the Reconcile function to compare the state specified by
-// the TwinComponent object against the actual cluster state, and then
+// the TwinInterface object against the actual cluster state, and then
 // perform operations to make the cluster state reflect the state specified by
 // the user.
 //
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.13.0/pkg/reconcile
-func (r *TwinComponentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *TwinInterfaceReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	logger := log.FromContext(ctx).WithValues("TwinService", req.NamespacedName)
 
 	logger.Info("Creating Twin Component " + req.Name)
@@ -55,8 +55,8 @@ func (r *TwinComponentReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *TwinComponentReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *TwinInterfaceReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&dtdv0.TwinComponent{}).
+		For(&dtdv0.TwinInterface{}).
 		Complete(r)
 }

@@ -22,13 +22,13 @@ import (
 
 // TODO: review if component is a good name because DTDL has a component too
 
-type TwinComponentPhase string
+type TwinInterfacePhase string
 
 const (
-	TwinComponentPhasePending TwinComponentPhase = "Pending"
-	TwinComponentPhaseUnknown TwinComponentPhase = "Unknown"
-	TwinComponentPhaseRunning TwinComponentPhase = "Running"
-	TwinComponentPhaseFailed  TwinComponentPhase = "Failed"
+	TwinInterfacePhasePending TwinInterfacePhase = "Pending"
+	TwinInterfacePhaseUnknown TwinInterfacePhase = "Unknown"
+	TwinInterfacePhaseRunning TwinInterfacePhase = "Running"
+	TwinInterfacePhaseFailed  TwinInterfacePhase = "Failed"
 )
 
 type PrimitiveType string
@@ -46,8 +46,8 @@ const (
 	MANY Multiplicity = "many"
 )
 
-// TwinComponentSpec defines the desired state of TwinComponent
-type TwinComponentSpec struct {
+// TwinInterfaceSpec defines the desired state of TwinInterface
+type TwinInterfaceSpec struct {
 	Id            string                   `json:"id,omitempty"`
 	DisplayName   string                   `json:"displayName,omitempty"`
 	Description   string                   `json:"description,omitempty"`
@@ -56,10 +56,10 @@ type TwinComponentSpec struct {
 	Commands      []TwinCommand            `json:"commands,omitempty"`
 	Relationships []TwinRelationship       `json:"relationships,omitempty"`
 	Telemetries   []TwinTelemetry          `json:"telemetries,omitempty"`
-	Extends       TwinComponentExtendsSpec `json:"extends"`
+	Extends       TwinInterfaceExtendsSpec `json:"extends"`
 }
 
-type TwinComponentExtendsSpec struct {
+type TwinInterfaceExtendsSpec struct {
 	Id string `json:"id,omitempty"`
 }
 
@@ -122,37 +122,37 @@ type TwinEnumSchemaValues struct {
 	EnumValue   string `json:"enumValue,omitempty"`
 }
 
-// TODO: review this definition: rename TwinComponent to TwinInterface
+// TODO: review this definition: rename TwinInterface to TwinInterface
 // TODO: TwinInstance instantiate the TwinInterface
 // type Component struct {
 // }
 
-// TwinComponentStatus defines the observed state of TwinComponent
-type TwinComponentStatus struct {
-	Status TwinComponentPhase `json:"status,omitempty"`
+// TwinInterfaceStatus defines the observed state of TwinInterface
+type TwinInterfaceStatus struct {
+	Status TwinInterfacePhase `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 //+kubebuilder:subresource:status
 
-// TwinComponent is the Schema for the twincomponents API
-type TwinComponent struct {
+// TwinInterface is the Schema for the TwinInterfaces API
+type TwinInterface struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
 
-	Spec   TwinComponentSpec   `json:"spec,omitempty"`
-	Status TwinComponentStatus `json:"status,omitempty"`
+	Spec   TwinInterfaceSpec   `json:"spec,omitempty"`
+	Status TwinInterfaceStatus `json:"status,omitempty"`
 }
 
 //+kubebuilder:object:root=true
 
-// TwinComponentList contains a list of TwinComponent
-type TwinComponentList struct {
+// TwinInterfaceList contains a list of TwinInterface
+type TwinInterfaceList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
-	Items           []TwinComponent `json:"items"`
+	Items           []TwinInterface `json:"items"`
 }
 
 func init() {
-	SchemeBuilder.Register(&TwinComponent{}, &TwinComponentList{})
+	SchemeBuilder.Register(&TwinInterface{}, &TwinInterfaceList{})
 }

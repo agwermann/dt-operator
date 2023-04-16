@@ -6,7 +6,7 @@ resources:
 - bases/dtd.digitaltwin_twinenums.yaml
 - bases/dtd.digitaltwin_twinservices.yaml
 - bases/dtd.digitaltwin_twininstances.yaml
-- bases/dtd.digitaltwin_twincomponents.yaml
+- bases/dtd.digitaltwin_twininterfaces.yaml
 - bases/core.digitaltwin_messaginggateways.yaml
 - bases/core.digitaltwin_messagebrokers.yaml
 - bases/core.digitaltwin_eventstores.yaml
@@ -19,7 +19,7 @@ patchesStrategicMerge:
 #- patches/webhook_in_twinenums.yaml
 #- patches/webhook_in_twinservices.yaml
 #- patches/webhook_in_twininstances.yaml
-#- patches/webhook_in_twincomponents.yaml
+#- patches/webhook_in_twininterfaces.yaml
 #- patches/webhook_in_messaginggateways.yaml
 #- patches/webhook_in_messagebrokers.yaml
 #- patches/webhook_in_eventstores.yaml
@@ -31,7 +31,7 @@ patchesStrategicMerge:
 #- patches/cainjection_in_twinenums.yaml
 #- patches/cainjection_in_twinservices.yaml
 #- patches/cainjection_in_twininstances.yaml
-#- patches/cainjection_in_twincomponents.yaml
+#- patches/cainjection_in_twininterfaces.yaml
 #- patches/cainjection_in_messaginggateways.yaml
 #- patches/cainjection_in_messagebrokers.yaml
 #- patches/cainjection_in_eventstores.yaml

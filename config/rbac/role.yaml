@@ -86,32 +86,6 @@ rules:
 - apiGroups:
   - dtd.digitaltwin
   resources:
-  - twincomponents
-  verbs:
-  - create
-  - delete
-  - get
-  - list
-  - patch
-  - update
-  - watch
-- apiGroups:
-  - dtd.digitaltwin
-  resources:
-  - twincomponents/finalizers
-  verbs:
-  - update
-- apiGroups:
-  - dtd.digitaltwin
-  resources:
-  - twincomponents/status
-  verbs:
-  - get
-  - patch
-  - update
-- apiGroups:
-  - dtd.digitaltwin
-  resources:
   - twinenums
   verbs:
   - create
@@ -157,6 +131,32 @@ rules:
   - dtd.digitaltwin
   resources:
   - twininstances/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
+  - twininterfaces
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
+  - twininterfaces/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - dtd.digitaltwin
+  resources:
+  - twininterfaces/status
   verbs:
   - get
   - patch

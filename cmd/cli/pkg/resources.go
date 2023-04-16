@@ -12,8 +12,8 @@ import (
 )
 
 type ResourceBuilder interface {
-	CreateTwinInterface(tInterface dtdl.Interface) apiv0.TwinComponent
-	CreateTwinInstance(twinInterface apiv0.TwinComponent) apiv0.TwinInstance
+	CreateTwinInterface(tInterface dtdl.Interface) apiv0.TwinInterface
+	CreateTwinInstance(twinInterface apiv0.TwinInterface) apiv0.TwinInstance
 }
 
 func NewResourceBuilder() ResourceBuilder {
@@ -23,13 +23,13 @@ func NewResourceBuilder() ResourceBuilder {
 type resourceBuilder struct {
 }
 
-// TODO: renew TwinComponent to TwinInstance
-func (r *resourceBuilder) CreateTwinInterface(tInterface dtdl.Interface) apiv0.TwinComponent {
+// TODO: renew TwinInterface to TwinInstance
+func (r *resourceBuilder) CreateTwinInterface(tInterface dtdl.Interface) apiv0.TwinInterface {
 	var properties []apiv0.TwinProperty
 	var relationships []apiv0.TwinRelationship
 	var telemetries []apiv0.TwinTelemetry
 	var commands []apiv0.TwinCommand
-	var extendedComponent apiv0.TwinComponentExtendsSpec
+	var extendedComponent apiv0.TwinInterfaceExtendsSpec
 
 	for _, content := range tInterface.Contents {
 		if content.Property != nil {
@@ -48,12 +48,12 @@ func (r *resourceBuilder) CreateTwinInterface(tInterface dtdl.Interface) apiv0.T
 
 	// Only supports one parent interface
 	if len(tInterface.Extends) > 0 {
-		extendedComponent = apiv0.TwinComponentExtendsSpec{
+		extendedComponent = apiv0.TwinInterfaceExtendsSpec{
 			Id: tInterface.Extends[0],
 		}
 	}
 
-	twinInterface := apiv0.TwinComponent{
+	twinInterface := apiv0.TwinInterface{
 		TypeMeta: v1.TypeMeta{
 			Kind:       "TwinInterface",
 			APIVersion: "dtd.digitaltwin/v0",
@@ -62,7 +62,7 @@ func (r *resourceBuilder) CreateTwinInterface(tInterface dtdl.Interface) apiv0.T
 			Name:      r.parseHostName(string(tInterface.Id)),
 			Namespace: "default",
 		},
-		Spec: apiv0.TwinComponentSpec{
+		Spec: apiv0.TwinInterfaceSpec{
 			Id:            string(tInterface.Id),
 			DisplayName:   string(tInterface.DisplayName),
 			Description:   string(tInterface.Description),
@@ -78,7 +78,7 @@ func (r *resourceBuilder) CreateTwinInterface(tInterface dtdl.Interface) apiv0.T
 	return twinInterface
 }
 
-func (r *resourceBuilder) CreateTwinInstance(twinInterface apiv0.TwinComponent) apiv0.TwinInstance {
+func (r *resourceBuilder) CreateTwinInstance(twinInterface apiv0.TwinInterface) apiv0.TwinInstance {
 	twinInstance := apiv0.TwinInstance{
 		TypeMeta: v1.TypeMeta{
 			Kind:       "TwinInstance",
@@ -90,7 +90,7 @@ func (r *resourceBuilder) CreateTwinInstance(twinInterface apiv0.TwinComponent) 
 		},
 		Spec: apiv0.TwinInstanceSpec{
 			Id: twinInterface.Spec.Id + "-instance",
-			Component: apiv0.TwinComponentSpec{
+			Component: apiv0.TwinInterfaceSpec{
 				Id: twinInterface.Spec.Id,
 			},
 			Template: corev1.PodTemplateSpec{

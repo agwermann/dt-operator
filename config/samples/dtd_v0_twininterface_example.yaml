@@ -1,5 +1,5 @@
 apiVersion: dtd.digitaltwin/v0
-kind: TwinComponent
+kind: TwinInterface
 metadata:
   name: factory
 spec:

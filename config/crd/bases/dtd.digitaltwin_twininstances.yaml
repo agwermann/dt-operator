@@ -36,7 +36,7 @@ spec:
             description: TwinInstanceSpec defines the desired state of TwinInstance
             properties:
               component:
-                description: TwinComponentSpec defines the desired state of TwinComponent
+                description: TwinInterfaceSpec defines the desired state of TwinInterface
                 properties:
                   commands:
                     items:

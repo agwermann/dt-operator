@@ -1,5 +1,5 @@
 apiVersion: dtd.digitaltwin/v0
-kind: TwinComponent
+kind: TwinInterface
 metadata:
   name: factory
 spec:
@@ -17,7 +17,7 @@ spec:
         type: string
 ---
 apiVersion: dtd.digitaltwin/v0
-kind: TwinComponent
+kind: TwinInterface
 metadata:
   name: machine
 spec:
@@ -40,7 +40,7 @@ spec:
         type: boolean
 ---
 apiVersion: dtd.digitaltwin/v0
-kind: TwinComponent
+kind: TwinInterface
 metadata:
   name: temperature-sensor
 spec:
@@ -61,7 +61,7 @@ spec:
         type: double
 ---
 apiVersion: dtd.digitaltwin/v0
-kind: TwinComponent
+kind: TwinInterface
 metadata:
   name: pressure-sensor
 spec:
