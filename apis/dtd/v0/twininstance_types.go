@@ -38,6 +38,31 @@ type TwinInstanceSpec struct {
 	Template       corev1.PodTemplateSpec `json:"template,omitempty"`
 }
 
+type TwinInstanceEvents struct {
+	Filters TwinInstanceEventsFilters `json:"filters,omitempty"`
+	Sink    TwinInterfaceEventsSink   `json:"sink,omitempty"`
+}
+
+// Based on CN Cloud Event Filters definitions: https://github.com/cloudevents/spec/blob/main/subscriptions/spec.md#324-filters
+// TODO: build complex filtering criteria
+type TwinInstanceEventsFilters struct {
+	Exact  TwinInstanceEventsFiltersProperties `json:"exact,omitempty"`
+	Prefix TwinInstanceEventsFiltersProperties `json:"prefix,omitempty"`
+	Suffix TwinInstanceEventsFiltersProperties `json:"suffix,omitempty"`
+	All    TwinInstanceEventsFiltersProperties `json:"all,omitempty"`
+	Any    TwinInstanceEventsFiltersProperties `json:"any,omitempty"`
+	Not    TwinInstanceEventsFiltersProperties `json:"not,omitempty"`
+}
+
+type TwinInstanceEventsFiltersProperties struct {
+	Type    string `json:"type,omitempty"`
+	Subject string `json:"subject,omitempty"`
+}
+
+type TwinInterfaceEventsSink struct {
+	InstanceId string `json:"instanceId,omitempty"`
+}
+
 // TwinInstanceStatus defines the observed state of TwinInstance
 type TwinInstanceStatus struct {
 	Status TwinInstancePhase `json:"status,omitempty"`
