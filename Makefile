@@ -160,6 +160,7 @@ local-setup:
 	make create-local-cluster
 	make load-local-docker-images
 	make load-local-k8s-resources
+	make local-local-ktwin
 
 local-local-ktwin:
 	make install

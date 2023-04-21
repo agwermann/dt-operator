@@ -35,6 +35,28 @@ spec:
           spec:
             description: TwinInstanceSpec defines the desired state of TwinInstance
             properties:
+              events:
+                items:
+                  properties:
+                    filters:
+                      description: 'Based on CN Cloud Event Filters definitions: https://github.com/cloudevents/spec/blob/main/subscriptions/spec.md#324-filters
+                        TODO: build complex filtering criteria'
+                      properties:
+                        exact:
+                          properties:
+                            subject:
+                              type: string
+                            type:
+                              type: string
+                          type: object
+                      type: object
+                    sink:
+                      properties:
+                        instanceId:
+                          type: string
+                      type: object
+                  type: object
+                type: array
               id:
                 type: string
               interface:

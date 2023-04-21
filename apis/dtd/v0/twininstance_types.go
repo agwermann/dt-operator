@@ -35,6 +35,7 @@ type TwinInstanceSpec struct {
 	Id             string                 `json:"id,omitempty"`
 	ParentInstance string                 `json:"parentInstance,omitempty"`
 	Interface      TwinInterfaceSpec      `json:"interface,omitempty"`
+	Events         []TwinInstanceEvents   `json:"events,omitempty"`
 	Template       corev1.PodTemplateSpec `json:"template,omitempty"`
 }
 
@@ -46,12 +47,12 @@ type TwinInstanceEvents struct {
 // Based on CN Cloud Event Filters definitions: https://github.com/cloudevents/spec/blob/main/subscriptions/spec.md#324-filters
 // TODO: build complex filtering criteria
 type TwinInstanceEventsFilters struct {
-	Exact  TwinInstanceEventsFiltersProperties `json:"exact,omitempty"`
-	Prefix TwinInstanceEventsFiltersProperties `json:"prefix,omitempty"`
-	Suffix TwinInstanceEventsFiltersProperties `json:"suffix,omitempty"`
-	All    TwinInstanceEventsFiltersProperties `json:"all,omitempty"`
-	Any    TwinInstanceEventsFiltersProperties `json:"any,omitempty"`
-	Not    TwinInstanceEventsFiltersProperties `json:"not,omitempty"`
+	Exact TwinInstanceEventsFiltersProperties `json:"exact,omitempty"`
+	// Prefix TwinInstanceEventsFiltersProperties `json:"prefix,omitempty"` // Unsupported
+	// Suffix TwinInstanceEventsFiltersProperties `json:"suffix,omitempty"` // Unsupported
+	// All    TwinInstanceEventsFiltersProperties `json:"all,omitempty"` // Unsupported
+	// Any    TwinInstanceEventsFiltersProperties `json:"any,omitempty"` // Unsupported
+	// Not    TwinInstanceEventsFiltersProperties `json:"not,omitempty"` // Unsupported
 }
 
 type TwinInstanceEventsFiltersProperties struct {
